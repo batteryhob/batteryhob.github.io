@@ -1,0 +1,25 @@
+---
+layout: default
+---
+<article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">
+      {% include icon-nexon.svg %}
+      {{ page.title | escape }}
+    </h1>
+  </header>
+  
+  {%- if page.title == "Our Team" -%}
+    {% include ourteam.html %}
+  {% endif %}
+
+  {%- if page.title == "Tags" -%}
+    {% include tags.html %}
+  {% endif %}
+
+  <div class="post-content">
+    {{ content }}
+  </div>
+
+</article>

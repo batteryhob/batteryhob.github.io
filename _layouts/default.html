@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+  {%- include head.html -%}
+
+  <body>
+
+    {%- include header.html -%}
+    
+    {%- if page.title == "Home" -%}
+      {%- include main_banner.html -%}
+    {%- endif -%}
+    
+    <main class="page-content" aria-label="Content">
+
+      {%- if page.layout == "post" -%}
+        {{ content }}
+      {%- else -%}
+        <div class="wrapper">
+          {{ content }}
+        </div>
+      {%- endif -%}
+
+    </main>
+
+    {%- include footer.html -%}
+
+  </body>
+
+</html>

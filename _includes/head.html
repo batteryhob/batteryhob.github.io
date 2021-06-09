@@ -1,0 +1,50 @@
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {%- seo -%}
+  <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
+  <link href="{{ "/assets/favicon.ico" | relative_url }}" rel="shortcut icon">
+  <!-- 이미지 팝업 -->
+  <script src="{{ "/assets/lib/jquery.js" | relative_url }}"></script>
+  <script src="{{ "/assets/lib/magnific-popup.min.js" | relative_url }}"></script>
+  <link rel="stylesheet" href="{{ "/assets/magnific-popup.css" | relative_url }}">
+  <!-- 폰트어썸 -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+  <!-- 코드블록 하이라이트 -->
+  <link rel="stylesheet" href="//unpkg.com/@highlightjs/cdn-assets@11.0.0/styles/monokai-sublime.min.css">
+  <script src="//unpkg.com/@highlightjs/cdn-assets@11.0.0/highlight.min.js"></script>
+  <script>    
+    $(document).ready(function() {
+      
+      //하이라이팅
+      hljs.initHighlightingOnLoad();
+
+      // id가 magnific인 경우에만 magnific-popup 적용.
+      $('.page-content img[id="popup"]').wrap( function(){
+          // magnific-popup 옵션 설정.
+          $(this).magnificPopup({
+              type: 'image',
+              closeOnContentClick: true,
+              showCloseBtn: false,
+              items: {
+                src: $(this).attr('src')
+              },
+          });
+          
+          // p 태그 높이를 내부 컨텐츠 높이에 자동으로 맞추기.
+          $(this).parent('p').css('overflow', 'auto');
+          
+          // 이미지를 감쌀 태그 설정.
+          return '<a href="' + $(this).attr('src') + '" style="width:' + $(this).attr('width') +'px; float: left;"><figure> </figure>' + '<figcaption style="text-align: center;" class="caption">' + $(this).attr('alt') + '</figcaption>' + '</a>';
+      });
+      
+    });
+  </script>
+  {%- if jekyll.environment == 'production' and site.google_analytics -%}
+    {%- include google_analytics.html -%}
+  {%- endif -%}
+  {% if page.use_math %}
+    {% include mathjax_support.html %}
+  {% endif %}
+</head>

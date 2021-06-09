@@ -1,0 +1,38 @@
+{% assign tags = site.tags | sort %}
+<div class="framework">
+  <section class="main">
+    <div class="post-preview">
+      {% for tag in tags %} 
+        <h2 id="{{ tag[0] | slugify }}">#{{ tag[0] }}</h2>
+        <ul>
+          {% for post in tag[1] %}
+            <a href="{{ site.baseurl }}{{ post.url }}">
+            <li>
+              {{ post.title }}
+              <span class="post-meta" style="margin-left: 15px;">
+                {{ post.date | date: "%B %-d, %Y" }}
+              </span>
+            </li>
+          </a>
+          {% endfor %}
+        </ul>
+      {% endfor %}
+    </div>
+  </section>
+  <section class="side-bar">
+    <div class="side-bar-tags"> 
+      <ul>
+      {% for tag in tags %}
+        <li>
+          <a href="/tags/#{{ tag[0]  }}">
+            {{ tag[0] }}
+            <span>
+              {{ tag | last | size }}
+            </span>
+          </a>
+        </li>
+      {% endfor %}
+      </ul>
+    </div>
+  </section>
+</div>

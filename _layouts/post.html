@@ -1,0 +1,48 @@
+---
+layout: default
+---
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="blog-header" style="background-image: url(https://www.vactualpapers.com/web/wallpapers/modern-material-design-full-hd-wallpaper-no-333/1920x1920.png)">
+    <div class="wrapper">
+        <h1 class="post-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
+        <p class="post-meta">
+          <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+            {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+            <i class="fa fa-calendar"></i>
+            {{ page.date | date: date_format }}
+          </time>
+          <ul class="post-tags">
+            {% for tag in page.tags %}
+              {% capture tag_name %}{{ tag }}{% endcapture %}
+              <li>
+                <a href="/tags/#{{ tag_name }}">
+                  <span>#{{ tag_name }}</span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+          {%- include author.html -%}
+    </div>
+  </header>
+
+  <div class="wrapper">
+    <div class="framework">
+      <div class="main">
+        <div class="post-content e-content" itemprop="articleBody">
+          {{ content }}          
+        </div>
+      </div>
+      <div class="side-bar">
+        {{ content | toc_only }}
+      </div>
+    </div>
+    {%- include author.html -%}
+  </div>
+
+  {%- if site.disqus.shortname -%}
+    {%- include disqus_comments.html -%}
+  {%- endif -%}
+
+  <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
+</article>
