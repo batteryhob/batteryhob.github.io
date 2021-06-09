@@ -7,7 +7,6 @@ tags: mlops aws kubernetes
 excerpt: 머신러닝 실험 모델을 프로덕션 레벨로 사용하기 위한 필수적인 프로세스입니다. 로컬 컴퓨터, 제플린, 데이터브릭스에서만 사용해보았던 머신러닝 모델을 어떻게 해야 상용 서비스로 만들 수 있을까요? 머신러닝 엔지니어와 분석가가 개발자와의 업무 의존성을 줄이기 위한 머신러닝 인프라에 대해 설명합니다.
 use_math: false
 toc: true
-production: true
 # tags: 자동 수집되는 태그 띄어쓰기로 구분, 반드시 소문자로 사용
 # excerpt: 메인 화면에 노출되는 post의 description
 # use_math : 수식이 필요 할 경우(윗 첨자, 아랫첨자 동시 사용 불가) true | false

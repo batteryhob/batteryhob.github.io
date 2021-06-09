@@ -5,12 +5,12 @@ date:   2021-06-04 00:00:00 +0900
 author: 전지호
 tags: aws
 excerpt: S3를 이용하여 로그 및 분석 결과 혹은 파일을 저장하여 사용하다 보면 어느새 너무 많은 양의 데이터가 축적됩니다. 이 중 사용하는 데이터나 파일은 상관이 없으나, 사용하지 않는 데이터가 너무 많이 쌓이면 문제가 발생할 수 도 있습니다. AWS Concsole이나 S3 Browser를 통해 이를 삭제하고 관리할 수 잇는 방법을 알아봅시다.
-toc: false
 use_math: false
+toc: false
 # tags: 자동 수집되는 태그 띄어쓰기로 구분, 반드시 소문자로 사용
 # excerpt: 메인 화면에 노출되는 post의 description
-# toc : 목차가 필요 할 경우 true | false
 # use_math : 수식이 필요 할 경우(윗 첨자, 아랫첨자 동시 사용 불가) true | false
+# toc : 목차가 필요 할 경우 true | false
 # emoji 사이트: https://getemoji.com/
 ---
 

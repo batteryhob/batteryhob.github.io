@@ -11,6 +11,7 @@ toc: true
 # excerpt: 메인 화면에 노출되는 post의 description
 # use_math : 수식이 필요 할 경우(윗 첨자, 아랫첨자 동시 사용 불가) true | false
 # toc : 목차가 필요 할 경우 true | false
+# emoji 사이트: https://getemoji.com/
 ---
 
 
