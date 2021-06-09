@@ -18,13 +18,13 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: 머신러닝파트 기술블로그
+title: 전지호 기술블로그
 email: batteryho@nexon.co.kr
 description: >- # this means to ignore newlines until "baseurl:"
 environment: "production"
 
 baseurl: ""
-url: "https://ml.na.nexon.com"
+url: "https://batteryhob.github.io/"
 twitter_username: ""
 github_username:  ""
 

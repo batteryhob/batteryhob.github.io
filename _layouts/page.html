@@ -9,10 +9,6 @@ layout: default
       {{ page.title | escape }}
     </h1>
   </header>
-  
-  {%- if page.title == "Our Team" -%}
-    {% include ourteam.html %}
-  {% endif %}
 
   {%- if page.title == "Tags" -%}
     {% include tags.html %}
