@@ -2,7 +2,7 @@
 layout: post
 title:  AWS Aurora DB, Mysql DB에서 스케줄러 사용하는 방법
 date:   2021-06-03 00:00:00 +0900
-author: 전지호
+author: 배터리호
 tags: aws sql mysql
 excerpt: AWS에서 사용하는 RDB 데이터베이스인 AuroraDB에서 스케줄러를 사용하는 방법을 설명합니다. 굉장히 많은 데이터가 일반 RDB에 쌓일 경우, 불가피하게 속도에 영향을 끼칠 수 있습니다. 한 예로, 1 번의 쿼리로 데이터를 삭제하기 너무 많은 시간이 필요할 수 있습니다. 스케줄러를 적절히 사용하면 데이터 관리를 용이하게 할 수 있을 것입니다. 
 use_math: false

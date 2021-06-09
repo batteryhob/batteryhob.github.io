@@ -2,7 +2,7 @@
 layout: post
 title: AWS EKS 쿠버네티스에서 JupyterHub 환경 설정하기
 date: 2021-05-31 00:00:00 +0900
-author: 전지호
+author: 배터리호
 tags: docker kubernetes jupyter aws
 excerpt: JupyterHub를 구축했다면 사용자 별 환경과 리소스를 구분하기 위한 설정방법을 알아봅시다.
 use_math: false
@@ -25,7 +25,7 @@ toc: true
 
 <hr/>
 
-👉 [첫번째 포스트](/2021/05/27/JupyterhubForK8S-전지호.html)
+👉 [첫번째 포스트](/2021/05/27/JupyterhubForK8S-배터리호.html)
 
 위 포스트 처음에 만들었던 config.yaml를 확인합니다.
 

@@ -2,7 +2,7 @@
 layout: post
 title:  Apache Zeppelin과 Jupyter의 비교
 date:   2021-06-04 00:00:00 +0900
-author: 전지호
+author: 배터리호
 tags: zeppelin jupyter
 excerpt: 데이터 분석의 워크플로를 개선하는 아파치 제플린과 주피터를 간단하게 비교해볼께요.
 use_math: false

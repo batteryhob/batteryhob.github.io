@@ -2,7 +2,7 @@
 layout: post
 title: AWS EKS 쿠버네티스에서 JupyterHub 설치하기
 date: 2021-05-28 00:00:00 +0900
-author: 전지호
+author: 배터리호
 tags: docker kubernetes jupyter aws
 excerpt: 쿠버네티스에 여러명의 분석가가 함께 작업할 수 있는 JupyterHub를 구축해보십니다. 각자 분리된 환경에서 일할 수 있으면 참 좋겠죠?
 use_math: false

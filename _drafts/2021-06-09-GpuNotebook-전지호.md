@@ -2,7 +2,7 @@
 layout: post
 title:  Jupyter Notebook 도커 GPU 연동하기(tensorflow, pytorch, gpu-jupyter)
 date:   2021-06-09 00:00:00 +0900
-author: 전지호
+author: 배터리호
 tags: jupyter docker tensorflow pytorch
 excerpt: 도커로 만든 도커라이즈 Jupyter Notebook의 유용함을 느끼다보면, 자연스럽게 tensorflow 같은 딥러닝 프레임워크가 설치된 Jupyter Notebook도 사용할 수 있게 됩니다. 하지만 GPU 가속을 사용하기 위해선 한가지 장애물을 또 넘어야 합니다. gpu-jupyter 프로젝트가 도와줄 것입니다.
 use_math: false
