@@ -2,7 +2,7 @@
 layout: post
 title:  AWS S3 데이터 Lifecycle 기능을 이용하여 정리하기
 date:   2021-06-04 00:00:00 +0900
-author: 배터리호
+author: 전지호
 tags: aws
 excerpt: S3를 이용하여 로그 및 분석 결과 혹은 파일을 저장하여 사용하다 보면 어느새 너무 많은 양의 데이터가 축적됩니다. 이 중 사용하는 데이터나 파일은 상관이 없으나, 사용하지 않는 데이터가 너무 많이 쌓이면 문제가 발생할 수 도 있습니다. AWS Concsole이나 S3 Browser를 통해 이를 삭제하고 관리할 수 잇는 방법을 알아봅시다.
 use_math: false

@@ -2,7 +2,7 @@
 layout: post
 title:  머신러닝 서비스를 만들기 위한 MLOps Vol.2
 date:   2021-04-16 01:00:00 +0900
-author: 배터리호
+author: 전지호
 tags: mlops aws kubernetes
 excerpt: 인텔리전스 랩스에서 AWS를 이용하여 가장 쉽게 MLOps를 구축하는 방법
 use_math: false
