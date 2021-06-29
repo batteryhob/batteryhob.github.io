@@ -10,7 +10,7 @@ layout: default
     <section class="main">
     {%- if site.posts.size > 0 -%}
       <h2 class="post-list-heading">
-        {% include icon-nexon.svg %}
+        {% include icon-post.svg %}
         Posts
       </h2>
       <ul class="post-list">
@@ -36,7 +36,7 @@ layout: default
             {{ post.date | date: date_format }}
             <span style="margin-left: 10px; margin-right: 10px;">|</span>
             <i class="fas fa-user" style="margin-right: 10px;"></i>
-            {{ post.author | escape }}
+            배터리호
           </span>
           <p class="post-desc">
             {{ post.excerpt }}

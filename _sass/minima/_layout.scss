@@ -271,6 +271,24 @@
       }
     }
   }
+  .page-banner-comment {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 45px;
+    text-shadow: 2px 2px 2px #000;
+    .small {
+      font-size: 35px;
+    }
+    .writer {
+      margin-top: 25px;
+      font-size: 25px;
+      span {
+        font-size: 18px;
+      }
+    }
+  }
 
 }
 
