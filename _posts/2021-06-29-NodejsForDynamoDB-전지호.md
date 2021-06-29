@@ -153,7 +153,7 @@ export const selectDatas = async (_id) => {
 
 <br/>
 
-##  DynamoDB Delete 삭제
+##  DynamoDB 삭제
 
 <hr/>
 
