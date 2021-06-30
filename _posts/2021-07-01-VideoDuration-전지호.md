@@ -3,7 +3,7 @@ layout: post
 title:  video 객체의 duration(영상의 길이)이 Infinity로 나올 때 올바른 영상길이를 얻는 방법
 date:   2021-07-01 00:00:00 +0900
 author: 전지호
-tags: react graphql
+tags: javascript
 excerpt: 크롬에서 Video에 접근해 영상 길이를 얻어올 때, 오류로 인하여 Infinity로 나타날 때가 있습니다.
 use_math: false
 toc: true
