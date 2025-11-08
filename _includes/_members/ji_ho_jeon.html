@@ -12,6 +12,29 @@
             {%- endif -%}
             <div class="skill">
                 <ul class="skill-list">
+                    {%- if page.lang == "en" -%}
+                    <li>
+                        <a href="/en/tags/#aws">#aws</a>
+                    </li>
+                    <li>
+                        <a href="/en/tags/#docker">#docker</a>
+                    </li>
+                    <li>
+                        <a href="/en/tags/#kubernetes">#kubernetes</a>
+                    </li>
+                    <li>
+                        <a href="/en/tags/#python">#python</a>
+                    </li>
+                    <li>
+                        <a href="/en/tags/#javascript">#javascript</a>
+                    </li>
+                    <li>
+                        <a href="/en/tags/#react">#react</a>
+                    </li>
+                    <li>
+                        <a href="/en/tags/#vue">#vue</a>
+                    </li>
+                    {%- else -%}
                     <li>
                         <a href="/tags/#aws">#aws</a>
                     </li>
@@ -33,6 +56,7 @@
                     <li>
                         <a href="/tags/#vue">#vue</a>
                     </li>
+                    {%- endif -%}
                 </ul>
             </div>
         </div>
