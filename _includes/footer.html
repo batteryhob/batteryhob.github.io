@@ -4,14 +4,16 @@
   <div class="wrapper">
 
     <h2 class="footer-heading">
-      Copyright © 2021
+      Copyright © 2021-{{ 'now' | date: "%Y" }}
     </h2>
 
     <div class="footer-col-wrapper">
       <div class="footer-col footer-col-1">
         <ul class="contact-list">
           <li class="p-name">
-            {%- if site.author -%}
+            {%- if site.author.name -%}
+              {{ site.author.name | escape }}
+            {%- elsif site.author -%}
               {{ site.author | escape }}
             {%- else -%}
               {{ site.title | escape }}
@@ -21,10 +23,6 @@
               <li><a class="u-email" href="mailto:{{ site.email }}">{{ site.email }}</a></li>
             {%- endif -%}
         </ul>
-      </div>
-
-      <div class="footer-col footer-col-2">
-        <!-- {%- include social.html -%} -->
       </div>
 
       <div class="footer-col footer-col-3">
