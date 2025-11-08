@@ -12,11 +12,7 @@ layout: default
       <h2 class="post-list-heading">
         {% include icon-post.svg %}
         {%- assign page_lang = page.lang | default: "ko" -%}
-        {%- if page_lang == "en" -%}
         Posts
-        {%- else -%}
-        포스트
-        {%- endif -%}
       </h2>
       <ul class="post-list">
         {%- for post in site.posts -%}
@@ -35,11 +31,7 @@ layout: default
                 {% assign delta_ts = current_ts | minus: past_ts %}
                 {% assign seven_days_ts = 86400 | times: 7 %}
                 {% if seven_days_ts > delta_ts %}
-                {%- if page_lang == "en" -%}
                 New
-                {%- else -%}
-                신규
-                {%- endif -%}
                 {% endif %}
               </span>
           </h3>
@@ -78,13 +70,7 @@ layout: default
         {%- endfor -%}
       </ul>
 
-      <p class="rss-subscribe">
-        {%- if page_lang == "en" -%}
-        subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a>
-        {%- else -%}
-        <a href="{{ "/feed.xml" | relative_url }}">RSS</a>로 구독하기
-        {%- endif -%}
-      </p>
+      <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a></p>
     {%- endif -%}
     </section>
     <section class="side-bar">
