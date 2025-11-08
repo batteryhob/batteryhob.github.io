@@ -12,17 +12,7 @@
         <ul class="contact-list">
           <li class="p-name">
             {%- assign current_lang = page.lang | default: "ko" -%}
-            {%- if current_lang == "en" -%}
-              BatteryHo
-            {%- else -%}
-              {%- if site.author.name -%}
-                {{ site.author.name | escape }}
-              {%- elsif site.author -%}
-                {{ site.author | escape }}
-              {%- else -%}
-                {{ site.title | escape }}
-              {%- endif -%}
-            {%- endif -%}
+            {{ site.data.i18n[current_lang].author_name }}
             </li>
             {%- if site.email -%}
               <li><a class="u-email" href="mailto:{{ site.email }}">{{ site.email }}</a></li>
@@ -32,11 +22,7 @@
 
       <div class="footer-col footer-col-3">
         {%- assign current_lang = page.lang | default: "ko" -%}
-        {%- if current_lang == "en" -%}
-          <p>A tech blog covering AI Agents, MLOps, Kubernetes, and cloud-native development. Sharing practical insights and expertise.</p>
-        {%- else -%}
-          <p>{{- site.description | escape -}}</p>
-        {%- endif -%}
+        <p>{{ site.data.i18n[current_lang].footer_description }}</p>
       </div>
     </div>
 

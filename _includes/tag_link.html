@@ -1,0 +1,11 @@
+{%- comment -%}
+  Reusable tag link component
+  Usage: {% include tag_link.html tag="aws" lang=page.lang %}
+{%- endcomment -%}
+
+{%- assign lang = include.lang | default: "ko" -%}
+{%- if lang == "en" -%}
+<a href="/en/tags/#{{ include.tag }}">
+{%- else -%}
+<a href="/tags/#{{ include.tag }}">
+{%- endif -%}

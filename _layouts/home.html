@@ -40,11 +40,7 @@ layout: default
             {{ post.date | date: date_format }}
             <span style="margin-left: 10px; margin-right: 10px;">|</span>
             <i class="fas fa-user" style="margin-right: 10px;"></i>
-            {%- if page_lang == "en" -%}
-            BatteryHo
-            {%- else -%}
-            배터리호
-            {%- endif -%}
+            {{ site.data.i18n[page_lang].author_name }}
           </span>
           <p class="post-desc">
             {{ post.excerpt }}

@@ -5,19 +5,11 @@
     <div class="wrapper">
         <div class="page-banner-comment">
             {%- assign current_lang = page.lang | default: "ko" -%}
-            {%- if current_lang == "en" -%}
-            <div class="small">"When you write anything here,</div>
-            <div>it looks like a famous quote."</div>
-            <div class="writer">BatteryHo
+            <div class="small">"{{ site.data.i18n[current_lang].quote_line1 }}</div>
+            <div>{{ site.data.i18n[current_lang].quote_line2 }}"</div>
+            <div class="writer">{{ site.data.i18n[current_lang].author_name }}
                 <span>(1986.12.30 ~)</span>
             </div>
-            {%- else -%}
-            <div class="small">"이런 곳에 아무말이나 써놓으면,</div>
-            <div>명언같이 보인다."</div>
-            <div class="writer">배터리호
-                <span>(1986.12.30 ~)</span>
-            </div>
-            {%- endif -%}
         </div>
     </div>
 </section>

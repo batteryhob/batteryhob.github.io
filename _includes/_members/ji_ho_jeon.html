@@ -1,3 +1,11 @@
+{%- comment -%}
+  Author: Ji Ho Jeon (BatteryHo)
+  Description and skills displayed in blog posts
+{%- endcomment -%}
+
+{%- assign lang = page.lang | default: "ko" -%}
+{%- assign skills = "aws,docker,kubernetes,python,javascript,react,vue" | split: "," -%}
+
 <div class="post-member">
     <div class="thumbnail">
         <img src="{{ '/assets/member/전지호.jpg' | relative_url }}" alt="">
@@ -5,58 +13,14 @@
     <div class="desc">
         <div class="inner-cell">
             <span class="name">배터리호 | AI Agent Developer</span>
-            {%- if page.lang == "en" -%}
-            <span class="introduce">AI Agent Developer crafting intelligent autonomous systems that think and act. Passionate about MLOps, cloud-native architectures, and the future of AI collaboration.</span>
-            {%- else -%}
-            <span class="introduce">자율적으로 사고하고 행동하는 AI 에이전트를 만드는 개발자입니다. MLOps, 클라우드 네이티브 아키텍처, 그리고 AI 협업의 미래에 관심이 많습니다.</span>
-            {%- endif -%}
+            <span class="introduce">{{ site.data.i18n[lang].author_intro }}</span>
             <div class="skill">
                 <ul class="skill-list">
-                    {%- if page.lang == "en" -%}
+                    {%- for skill in skills -%}
                     <li>
-                        <a href="/en/tags/#aws">#aws</a>
+                        {% include tag_link.html tag=skill lang=lang %}#{{ skill }}</a>
                     </li>
-                    <li>
-                        <a href="/en/tags/#docker">#docker</a>
-                    </li>
-                    <li>
-                        <a href="/en/tags/#kubernetes">#kubernetes</a>
-                    </li>
-                    <li>
-                        <a href="/en/tags/#python">#python</a>
-                    </li>
-                    <li>
-                        <a href="/en/tags/#javascript">#javascript</a>
-                    </li>
-                    <li>
-                        <a href="/en/tags/#react">#react</a>
-                    </li>
-                    <li>
-                        <a href="/en/tags/#vue">#vue</a>
-                    </li>
-                    {%- else -%}
-                    <li>
-                        <a href="/tags/#aws">#aws</a>
-                    </li>
-                    <li>
-                        <a href="/tags/#docker">#docker</a>
-                    </li>
-                    <li>
-                        <a href="/tags/#kubernetes">#kubernetes</a>
-                    </li>
-                    <li>
-                        <a href="/tags/#python">#python</a>
-                    </li>
-                    <li>
-                        <a href="/tags/#javascript">#javascript</a>
-                    </li>
-                    <li>
-                        <a href="/tags/#react">#react</a>
-                    </li>
-                    <li>
-                        <a href="/tags/#vue">#vue</a>
-                    </li>
-                    {%- endif -%}
+                    {%- endfor -%}
                 </ul>
             </div>
         </div>
