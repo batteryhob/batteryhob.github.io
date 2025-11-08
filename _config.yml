@@ -21,18 +21,32 @@
 title: 배터리호 기술블로그
 email: gorokke18@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
+  MLOps, Kubernetes, React, Node.js 등 다양한 기술 주제를 다루는 개발 블로그입니다.
+  실무 경험과 기술 지식을 공유합니다.
 environment: "production"
+lang: ko_KR
 
 baseurl: ""
 url: "https://batteryhob.github.io/"
 twitter_username: ""
 github_username:  ""
 
+# SEO settings
+author:
+  name: 배터리호
+  email: gorokke18@gmail.com
+
+social:
+  name: 배터리호
+  links: []
+
 # Build settings
 theme: minima
 plugins:
   - jekyll-feed
   - jekyll-toc
+  - jekyll-seo-tag
+  - jekyll-sitemap
 
 # Matchjax
 markdown: kramdown
