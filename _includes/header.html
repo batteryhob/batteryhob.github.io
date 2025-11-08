@@ -7,7 +7,8 @@
     {%- assign default_paths = site.pages | map: "path" -%}
     {%- assign page_paths = site.header_pages | default: default_paths -%}
     <a class="site-title" rel="author" href="{{ "/" | relative_url }}">
-      {% include icon-battery.svg %} 배터리호 기술블로그
+      {%- assign current_lang = page.lang | default: "ko" -%}
+      {% include icon-battery.svg %} {{ site.data.i18n[current_lang].site_title }}
     </a>
 
     {%- if page_paths -%}

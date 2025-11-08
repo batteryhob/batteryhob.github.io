@@ -1,11 +1,20 @@
+{%- assign current_lang = page.lang | default: "ko" -%}
 {% assign tags = site.tags | sort %}
 <div class="framework">
   <section class="main">
     <div class="post-preview">
-      {% for tag in tags %} 
+      {% for tag in tags %}
+        {%- assign tag_posts = "" | split: "" -%}
+        {%- for post in tag[1] -%}
+          {%- assign post_lang = post.lang | default: "ko" -%}
+          {%- if post_lang == current_lang -%}
+            {%- assign tag_posts = tag_posts | push: post -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if tag_posts.size > 0 -%}
         <h2 id="{{ tag[0] | slugify }}">#{{ tag[0] }}</h2>
         <ul>
-          {% for post in tag[1] %}
+          {% for post in tag_posts %}
             <a href="{{ site.baseurl }}{{ post.url }}">
             <li>
               {{ post.title }}
@@ -16,21 +25,35 @@
           </a>
           {% endfor %}
         </ul>
+        {%- endif -%}
       {% endfor %}
     </div>
   </section>
   <section class="side-bar">
-    <div class="side-bar-tags"> 
+    <div class="side-bar-tags">
       <ul>
       {% for tag in tags %}
+        {%- assign tag_count = 0 -%}
+        {%- for post in tag[1] -%}
+          {%- assign post_lang = post.lang | default: "ko" -%}
+          {%- if post_lang == current_lang -%}
+            {%- assign tag_count = tag_count | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if tag_count > 0 -%}
         <li>
+          {%- if current_lang == "en" -%}
+          <a href="/en/tags/#{{ tag[0]  }}">
+          {%- else -%}
           <a href="/tags/#{{ tag[0]  }}">
+          {%- endif -%}
             {{ tag[0] }}
             <span>
-              {{ tag | last | size }}
+              {{ tag_count }}
             </span>
           </a>
         </li>
+        {%- endif -%}
       {% endfor %}
       </ul>
     </div>

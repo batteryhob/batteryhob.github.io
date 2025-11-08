@@ -1,34 +1,26 @@
+{%- comment -%}
+  Author: Ji Ho Jeon (BatteryHo)
+  Description and skills displayed in blog posts
+{%- endcomment -%}
+
+{%- assign lang = page.lang | default: "ko" -%}
+{%- assign skills = "aws,docker,kubernetes,python,javascript,react,vue" | split: "," -%}
+
 <div class="post-member">
     <div class="thumbnail">
         <img src="{{ '/assets/member/전지호.jpg' | relative_url }}" alt="">
     </div>
     <div class="desc">
         <div class="inner-cell">
-            <span class="name">배터리호 | Web Developer</span>
-            <span class="introduce">UI 퍼블리싱, 프론트엔드, 백엔드를 포함한 풀스택 웹 개발자이며, 클라우드 개발도 겸하고 있습니다.</span>
+            <span class="name">배터리호 | AI Agent Developer</span>
+            <span class="introduce">{{ site.data.i18n[lang].author_intro }}</span>
             <div class="skill">
                 <ul class="skill-list">
+                    {%- for skill in skills -%}
                     <li>
-                        <a href="/tags/#aws">#aws</a>
+                        {% include tag_link.html tag=skill lang=lang %}#{{ skill }}</a>
                     </li>
-                    <li>
-                        <a href="/tags/#docker">#docker</a>
-                    </li>
-                    <li>
-                        <a href="/tags/#kubernetes">#kubernetes</a>
-                    </li>
-                    <li>
-                        <a href="/tags/#python">#python</a>
-                    </li>
-                    <li>
-                        <a href="/tags/#javascript">#javascript</a>
-                    </li>
-                    <li>
-                        <a href="/tags/#react">#react</a>
-                    </li>
-                    <li>
-                        <a href="/tags/#vue">#vue</a>
-                    </li>
+                    {%- endfor -%}
                 </ul>
             </div>
         </div>

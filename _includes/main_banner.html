@@ -4,9 +4,10 @@
     </div>
     <div class="wrapper">
         <div class="page-banner-comment">
-            <div class="small">"이런 곳에 아무말이나 써놓으면,</div>
-            <div >명언같이 보인다."</div>
-            <div class="writer">배터리호 
+            {%- assign current_lang = page.lang | default: "ko" -%}
+            <div class="small">"{{ site.data.i18n[current_lang].quote_line1 }}</div>
+            <div>{{ site.data.i18n[current_lang].quote_line2 }}"</div>
+            <div class="writer">{{ site.data.i18n[current_lang].author_name }}
                 <span>(1986.12.30 ~)</span>
             </div>
         </div>

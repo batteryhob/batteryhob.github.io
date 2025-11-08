@@ -16,7 +16,12 @@ layout: default
             {% for tag in page.tags %}
               {% capture tag_name %}{{ tag }}{% endcapture %}
               <li>
+                {%- assign current_lang = page.lang | default: "ko" -%}
+                {%- if current_lang == "en" -%}
+                <a href="/en/tags/#{{ tag_name }}">
+                {%- else -%}
                 <a href="/tags/#{{ tag_name }}">
+                {%- endif -%}
                   <span>#{{ tag_name }}</span>
                 </a>
               </li>

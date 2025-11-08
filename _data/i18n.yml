@@ -1,0 +1,26 @@
+# Multilingual translations for the blog
+# Usage: {{ site.data.i18n[lang].key }}
+
+ko:
+  site_title: "배터리호 기술블로그"
+  author_name: "배터리호"
+  footer_description: "MLOps, Kubernetes, React, Node.js 등 다양한 기술 주제를 다루는 개발 블로그입니다. 실무 경험과 기술 지식을 공유합니다."
+
+  # Main banner quote
+  quote_line1: "이런 곳에 아무말이나 써놓으면,"
+  quote_line2: "명언같이 보인다."
+
+  # Author description
+  author_intro: "자율적으로 사고하고 행동하는 AI 에이전트를 만드는 개발자입니다. MLOps, 클라우드 네이티브 아키텍처, 그리고 AI 협업의 미래에 관심이 많습니다."
+
+en:
+  site_title: "BatteryHo Tech Blog"
+  author_name: "BatteryHo"
+  footer_description: "A tech blog covering AI Agents, MLOps, Kubernetes, and cloud-native development. Sharing practical insights and expertise."
+
+  # Main banner quote
+  quote_line1: "When you write anything here,"
+  quote_line2: "it looks like a famous quote."
+
+  # Author description
+  author_intro: "AI Agent Developer crafting intelligent autonomous systems that think and act. Passionate about MLOps, cloud-native architectures, and the future of AI collaboration."

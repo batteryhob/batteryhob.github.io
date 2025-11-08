@@ -11,13 +11,8 @@
       <div class="footer-col footer-col-1">
         <ul class="contact-list">
           <li class="p-name">
-            {%- if site.author.name -%}
-              {{ site.author.name | escape }}
-            {%- elsif site.author -%}
-              {{ site.author | escape }}
-            {%- else -%}
-              {{ site.title | escape }}
-            {%- endif -%}
+            {%- assign current_lang = page.lang | default: "ko" -%}
+            {{ site.data.i18n[current_lang].author_name }}
             </li>
             {%- if site.email -%}
               <li><a class="u-email" href="mailto:{{ site.email }}">{{ site.email }}</a></li>
@@ -26,7 +21,8 @@
       </div>
 
       <div class="footer-col footer-col-3">
-        <p>{{- site.description | escape -}}</p>
+        {%- assign current_lang = page.lang | default: "ko" -%}
+        <p>{{ site.data.i18n[current_lang].footer_description }}</p>
       </div>
     </div>
 
