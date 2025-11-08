@@ -31,10 +31,6 @@ url: "https://batteryhob.github.io/"
 twitter_username: ""
 github_username:  ""
 
-# Header navigation menu
-header_pages:
-  - tags.md
-
 # SEO settings
 author:
   name: 배터리호
