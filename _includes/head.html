@@ -3,6 +3,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   {%- seo -%}
+  <!-- AdSense 최적화를 위한 메타 태그 -->
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="theme-color" content="#005FCC">
   <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
   <link href="{{ "/assets/favicon.ico" | relative_url }}" rel="shortcut icon">
   <!-- 이미지 팝업 -->
@@ -10,15 +13,15 @@
   <script src="{{ "/assets/lib/magnific-popup.min.js" | relative_url }}"></script>
   <link rel="stylesheet" href="{{ "/assets/magnific-popup.css" | relative_url }}">
   <!-- 폰트어썸 -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
   <!-- 코드블록 하이라이트 -->
   <link rel="stylesheet" href="//unpkg.com/@highlightjs/cdn-assets@11.0.0/styles/monokai-sublime.min.css">
   <script src="//unpkg.com/@highlightjs/cdn-assets@11.0.0/highlight.min.js"></script>
-  <script>    
+  <script>
     $(document).ready(function() {
-      
+
       //하이라이팅
-      hljs.initHighlightingOnLoad();
+      hljs.highlightAll();
 
       // id가 magnific인 경우에만 magnific-popup 적용.
       $('.page-content img[id="popup"]').wrap( function(){
