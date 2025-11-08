@@ -1,0 +1,36 @@
+{%- comment -%}
+  Hreflang tags for multilingual SEO
+  Helps Google understand language versions of pages
+{%- endcomment -%}
+
+{%- assign current_lang = page.lang | default: "ko" -%}
+
+{%- if page.ref -%}
+  {%- comment -%} For posts with translations (using ref field) {%- endcomment -%}
+  {%- assign posts = site.posts | where: "ref", page.ref -%}
+  {%- for post in posts -%}
+    {%- assign post_lang = post.lang | default: "ko" -%}
+    {%- if post_lang == "ko" -%}
+<link rel="alternate" hreflang="ko" href="{{ site.url }}{{ post.url }}" />
+    {%- elsif post_lang == "en" -%}
+<link rel="alternate" hreflang="en" href="{{ site.url }}{{ post.url }}" />
+    {%- endif -%}
+  {%- endfor -%}
+  {%- comment -%} x-default points to Korean version {%- endcomment -%}
+  {%- assign default_post = posts | where: "lang", "ko" | first -%}
+  {%- unless default_post -%}
+    {%- assign default_post = posts | first -%}
+  {%- endunless -%}
+<link rel="alternate" hreflang="x-default" href="{{ site.url }}{{ default_post.url }}" />
+{%- elsif page.layout == "home" or page.layout == "page" -%}
+  {%- comment -%} For home and static pages {%- endcomment -%}
+  {%- if current_lang == "ko" -%}
+<link rel="alternate" hreflang="ko" href="{{ site.url }}{{ page.url }}" />
+<link rel="alternate" hreflang="en" href="{{ site.url }}/en{{ page.url }}" />
+<link rel="alternate" hreflang="x-default" href="{{ site.url }}{{ page.url }}" />
+  {%- else -%}
+<link rel="alternate" hreflang="ko" href="{{ site.url }}{{ page.url | remove: '/en' }}" />
+<link rel="alternate" hreflang="en" href="{{ site.url }}{{ page.url }}" />
+<link rel="alternate" hreflang="x-default" href="{{ site.url }}{{ page.url | remove: '/en' }}" />
+  {%- endif -%}
+{%- endif -%}

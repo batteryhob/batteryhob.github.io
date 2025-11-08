@@ -23,18 +23,13 @@
         </label>
 
         <div class="trigger">
-          {%- for path in page_paths -%}
-            {%- assign my_page = site.pages | where: "path", path | first -%}
-            {%- if my_page.title -%}
-              {%- if my_page.title != "Home" -%}
-                <a class="page-link" href="{{ my_page.url | relative_url }}">{{ my_page.title | escape }}</a>
-              {%- endif -%}
-            {%- endif -%}
-          {%- endfor -%}
           {%- assign current_lang = page.lang | default: "ko" -%}
+          {%- comment -%} Language-aware Tags link {%- endcomment -%}
           {%- if current_lang == "ko" -%}
+            <a class="page-link" href="{{ "/tags/" | relative_url }}">Tags</a>
             <a class="page-link" href="{{ "/en/" | relative_url }}" style="font-weight: bold;">🇺🇸 English</a>
           {%- else -%}
+            <a class="page-link" href="{{ "/en/tags/" | relative_url }}">Tags</a>
             <a class="page-link" href="{{ "/" | relative_url }}" style="font-weight: bold;">🇰🇷 한국어</a>
           {%- endif -%}
         </div>
