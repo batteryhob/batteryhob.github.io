@@ -1,3 +1,10 @@
+---
+layout: page
+title: Maintenance Guide
+permalink: /maintenance/
+published: false
+---
+
 # 유지보수 가이드 (Maintenance Guide)
 
 이 문서는 블로그의 코드 구조와 유지보수 방법을 설명합니다.
