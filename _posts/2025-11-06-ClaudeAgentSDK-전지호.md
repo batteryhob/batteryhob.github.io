@@ -7,6 +7,8 @@ tags: ai agent sdk claude anthropic automation
 excerpt: Anthropic의 Claude Agent SDK를 활용하여 자율적으로 작동하는 AI 에이전트를 구축하는 방법을 알아봅시다.
 use_math: false
 toc: true
+lang: ko
+ref: claude-agent-sdk
 ---
 
 ## Claude Agent SDK란?

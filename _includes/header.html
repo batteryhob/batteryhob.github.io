@@ -30,6 +30,12 @@
               {%- endif -%}
             {%- endif -%}
           {%- endfor -%}
+          {%- assign current_lang = page.lang | default: "ko" -%}
+          {%- if current_lang == "ko" -%}
+            <a class="page-link" href="{{ "/en/" | relative_url }}" style="font-weight: bold;">🇺🇸 English</a>
+          {%- else -%}
+            <a class="page-link" href="{{ "/" | relative_url }}" style="font-weight: bold;">🇰🇷 한국어</a>
+          {%- endif -%}
         </div>
       </nav>
     {%- endif -%}
