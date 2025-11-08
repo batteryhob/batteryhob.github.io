@@ -11,7 +11,12 @@ layout: default
     {%- if site.posts.size > 0 -%}
       <h2 class="post-list-heading">
         {% include icon-post.svg %}
+        {%- assign page_lang = page.lang | default: "ko" -%}
+        {%- if page_lang == "en" -%}
         Posts
+        {%- else -%}
+        포스트
+        {%- endif -%}
       </h2>
       <ul class="post-list">
         {%- for post in site.posts -%}
@@ -28,9 +33,13 @@ layout: default
                 {% assign past_ts = post.date | date: '%s' | plus: 0 %}
                 {% assign current_ts = site.time | date: '%s' | plus: 0 %}
                 {% assign delta_ts = current_ts | minus: past_ts %}
-                {% assign seven_days_ts = 86400 | times: 7 %}          
+                {% assign seven_days_ts = 86400 | times: 7 %}
                 {% if seven_days_ts > delta_ts %}
+                {%- if page_lang == "en" -%}
                 New
+                {%- else -%}
+                신규
+                {%- endif -%}
                 {% endif %}
               </span>
           </h3>
@@ -69,7 +78,13 @@ layout: default
         {%- endfor -%}
       </ul>
 
-      <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a></p>
+      <p class="rss-subscribe">
+        {%- if page_lang == "en" -%}
+        subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a>
+        {%- else -%}
+        <a href="{{ "/feed.xml" | relative_url }}">RSS</a>로 구독하기
+        {%- endif -%}
+      </p>
     {%- endif -%}
     </section>
     <section class="side-bar">
