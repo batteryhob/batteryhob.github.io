@@ -15,6 +15,9 @@ layout: default
       </h2>
       <ul class="post-list">
         {%- for post in site.posts -%}
+        {%- assign post_lang = post.lang | default: "ko" -%}
+        {%- assign page_lang = page.lang | default: "ko" -%}
+        {%- if post_lang == page_lang -%}
         <li>
           {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
           <h3>
@@ -54,6 +57,7 @@ layout: default
             </ul>
           </div>
         </li>
+        {%- endif -%}
         {%- endfor -%}
       </ul>
 

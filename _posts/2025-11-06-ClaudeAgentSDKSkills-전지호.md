@@ -7,6 +7,8 @@ tags: ai agent sdk claude skills automation productivity
 excerpt: AI가 똑똑하긴 한데 우리 회사 업무는 몰라요? Skills로 Claude를 당신만의 전문가로 만들어보세요.
 use_math: false
 toc: true
+lang: ko
+ref: claude-agent-skills
 ---
 
 ## "AI가 똑똑한 건 알겠는데, 우리 회사 업무는 하나도 몰라요"

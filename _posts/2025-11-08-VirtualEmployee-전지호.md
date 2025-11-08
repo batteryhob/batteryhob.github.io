@@ -8,6 +8,8 @@ excerpt: AI 에이전트 기반 가상직원의 개념과 실현 가능성을 �
 use_math: false
 toc: true
 description: AI 에이전트를 활용한 가상직원 시스템의 개념, 필수 요소, 운영 방식, 그리고 보상 체계에 대한 창의적 탐구
+lang: ko
+ref: virtual-employee
 ---
 
 ## 가상직원이라는 상상
