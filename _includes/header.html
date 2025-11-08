@@ -7,7 +7,12 @@
     {%- assign default_paths = site.pages | map: "path" -%}
     {%- assign page_paths = site.header_pages | default: default_paths -%}
     <a class="site-title" rel="author" href="{{ "/" | relative_url }}">
-      {% include icon-battery.svg %} 배터리호 기술블로그
+      {%- assign current_lang = page.lang | default: "ko" -%}
+      {%- if current_lang == "en" -%}
+        {% include icon-battery.svg %} BatteryHo Tech Blog
+      {%- else -%}
+        {% include icon-battery.svg %} 배터리호 기술블로그
+      {%- endif -%}
     </a>
 
     {%- if page_paths -%}

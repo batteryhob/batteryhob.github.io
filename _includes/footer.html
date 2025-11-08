@@ -11,12 +11,17 @@
       <div class="footer-col footer-col-1">
         <ul class="contact-list">
           <li class="p-name">
-            {%- if site.author.name -%}
-              {{ site.author.name | escape }}
-            {%- elsif site.author -%}
-              {{ site.author | escape }}
+            {%- assign current_lang = page.lang | default: "ko" -%}
+            {%- if current_lang == "en" -%}
+              BatteryHo
             {%- else -%}
-              {{ site.title | escape }}
+              {%- if site.author.name -%}
+                {{ site.author.name | escape }}
+              {%- elsif site.author -%}
+                {{ site.author | escape }}
+              {%- else -%}
+                {{ site.title | escape }}
+              {%- endif -%}
             {%- endif -%}
             </li>
             {%- if site.email -%}
@@ -26,7 +31,12 @@
       </div>
 
       <div class="footer-col footer-col-3">
-        <p>{{- site.description | escape -}}</p>
+        {%- assign current_lang = page.lang | default: "ko" -%}
+        {%- if current_lang == "en" -%}
+          <p>A tech blog covering AI Agents, MLOps, Kubernetes, and cloud-native development. Sharing practical insights and expertise.</p>
+        {%- else -%}
+          <p>{{- site.description | escape -}}</p>
+        {%- endif -%}
       </div>
     </div>
 
