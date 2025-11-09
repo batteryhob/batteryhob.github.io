@@ -1,3 +1,2 @@
 # Google AdSense ads.txt
-# AdSense 승인 후 아래 라인의 주석을 제거하고 YOUR-PUBLISHER-ID를 실제 게시자 ID로 교체하세요
-# google.com, pub-YOUR-PUBLISHER-ID, DIRECT, f08c47fec0942fa0
+google.com, pub-3156427334152726, DIRECT, f08c47fec0942fa0
