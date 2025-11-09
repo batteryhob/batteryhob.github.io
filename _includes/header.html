@@ -6,8 +6,13 @@
   <div class="wide-wrapper">
     {%- assign default_paths = site.pages | map: "path" -%}
     {%- assign page_paths = site.header_pages | default: default_paths -%}
-    <a class="site-title" rel="author" href="{{ "/" | relative_url }}">
-      {%- assign current_lang = page.lang | default: "ko" -%}
+    {%- assign current_lang = page.lang | default: "ko" -%}
+    {%- if current_lang == "ko" -%}
+      {%- assign home_url = "/" -%}
+    {%- else -%}
+      {%- assign home_url = "/en/" -%}
+    {%- endif -%}
+    <a class="site-title" rel="author" href="{{ home_url | relative_url }}">
       {% include icon-battery.svg %} {{ site.data.i18n[current_lang].site_title }}
     </a>
 
