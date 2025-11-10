@@ -7,7 +7,7 @@ layout: null
 
   <!-- Korean Home Page -->
   <url>
-    <loc>{{ site.url }}/</loc>
+    <loc>{{ "/" | absolute_url }}</loc>
     <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -15,7 +15,7 @@ layout: null
 
   <!-- English Home Page -->
   <url>
-    <loc>{{ site.url }}/en/</loc>
+    <loc>{{ "/en/" | absolute_url }}</loc>
     <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -23,7 +23,7 @@ layout: null
 
   <!-- Korean Tags Page -->
   <url>
-    <loc>{{ site.url }}/tags/</loc>
+    <loc>{{ "/tags/" | absolute_url }}</loc>
     <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -31,7 +31,7 @@ layout: null
 
   <!-- English Tags Page -->
   <url>
-    <loc>{{ site.url }}/en/tags/</loc>
+    <loc>{{ "/en/tags/" | absolute_url }}</loc>
     <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -42,17 +42,17 @@ layout: null
     {%- assign post_lang = post.lang | default: "ko" -%}
     {%- if post_lang == "ko" -%}
   <url>
-    <loc>{{ site.url }}{{ post.url }}</loc>
+    <loc>{{ post.url | absolute_url }}</loc>
     <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     {%- if post.ref -%}
       {%- for p in site.posts -%}
         {%- if p.ref == post.ref and p.lang == "en" -%}
-    <xhtml:link rel="alternate" hreflang="en" href="{{ site.url }}/en{{ p.url }}" />
+    <xhtml:link rel="alternate" hreflang="en" href="{{ p.url | prepend: '/en' | absolute_url }}" />
         {%- endif -%}
       {%- endfor -%}
-    <xhtml:link rel="alternate" hreflang="ko" href="{{ site.url }}{{ post.url }}" />
+    <xhtml:link rel="alternate" hreflang="ko" href="{{ post.url | absolute_url }}" />
     {%- endif -%}
   </url>
     {%- endif -%}
@@ -63,17 +63,17 @@ layout: null
     {%- assign post_lang = post.lang | default: "ko" -%}
     {%- if post_lang == "en" -%}
   <url>
-    <loc>{{ site.url }}/en{{ post.url }}</loc>
+    <loc>{{ post.url | prepend: '/en' | absolute_url }}</loc>
     <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     {%- if post.ref -%}
       {%- for p in site.posts -%}
         {%- if p.ref == post.ref and p.lang == "ko" -%}
-    <xhtml:link rel="alternate" hreflang="ko" href="{{ site.url }}{{ p.url }}" />
+    <xhtml:link rel="alternate" hreflang="ko" href="{{ p.url | absolute_url }}" />
         {%- endif -%}
       {%- endfor -%}
-    <xhtml:link rel="alternate" hreflang="en" href="{{ site.url }}/en{{ post.url }}" />
+    <xhtml:link rel="alternate" hreflang="en" href="{{ post.url | prepend: '/en' | absolute_url }}" />
     {%- endif -%}
   </url>
     {%- endif -%}
