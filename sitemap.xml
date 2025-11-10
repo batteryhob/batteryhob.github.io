@@ -1,0 +1,82 @@
+---
+layout: null
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Korean Home Page -->
+  <url>
+    <loc>{{ site.url }}/</loc>
+    <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- English Home Page -->
+  <url>
+    <loc>{{ site.url }}/en/</loc>
+    <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Korean Tags Page -->
+  <url>
+    <loc>{{ site.url }}/tags/</loc>
+    <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- English Tags Page -->
+  <url>
+    <loc>{{ site.url }}/en/tags/</loc>
+    <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Korean Posts -->
+  {%- for post in site.posts -%}
+    {%- assign post_lang = post.lang | default: "ko" -%}
+    {%- if post_lang == "ko" -%}
+  <url>
+    <loc>{{ site.url }}{{ post.url }}</loc>
+    <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    {%- if post.ref -%}
+      {%- for p in site.posts -%}
+        {%- if p.ref == post.ref and p.lang == "en" -%}
+    <xhtml:link rel="alternate" hreflang="en" href="{{ site.url }}/en{{ p.url }}" />
+        {%- endif -%}
+      {%- endfor -%}
+    <xhtml:link rel="alternate" hreflang="ko" href="{{ site.url }}{{ post.url }}" />
+    {%- endif -%}
+  </url>
+    {%- endif -%}
+  {%- endfor -%}
+
+  <!-- English Posts -->
+  {%- for post in site.posts -%}
+    {%- assign post_lang = post.lang | default: "ko" -%}
+    {%- if post_lang == "en" -%}
+  <url>
+    <loc>{{ site.url }}/en{{ post.url }}</loc>
+    <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    {%- if post.ref -%}
+      {%- for p in site.posts -%}
+        {%- if p.ref == post.ref and p.lang == "ko" -%}
+    <xhtml:link rel="alternate" hreflang="ko" href="{{ site.url }}{{ p.url }}" />
+        {%- endif -%}
+      {%- endfor -%}
+    <xhtml:link rel="alternate" hreflang="en" href="{{ site.url }}/en{{ post.url }}" />
+    {%- endif -%}
+  </url>
+    {%- endif -%}
+  {%- endfor -%}
+
+</urlset>

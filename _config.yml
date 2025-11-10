@@ -46,7 +46,8 @@ plugins:
   - jekyll-feed
   - jekyll-toc
   - jekyll-seo-tag
-  - jekyll-sitemap
+  # Custom sitemap.xml is used instead of jekyll-sitemap for better multilingual support
+  # - jekyll-sitemap
 
 # Matchjax
 markdown: kramdown
