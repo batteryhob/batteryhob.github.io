@@ -27,7 +27,7 @@ environment: "production"
 lang: ko_KR
 
 baseurl: ""
-url: "https://batteryhob.github.io/"
+url: "https://batteryhob.github.io"
 twitter_username: ""
 github_username:  ""
 
