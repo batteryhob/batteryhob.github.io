@@ -13,7 +13,7 @@ ref: grok5-agent-competition
 
 ## Introduction: Musk's New Declaration
 
-In November 2025, Elon Musk revealed his ambitious plans for **Grok 5** at the Baron Investment Conference. His declaration that it will be "the smartest AI in the world" has added fuel to an already overheated AI competition.
+In November 2025, Elon Musk revealed his ambitious plans for **Grok 5** at the Baron Investment Conference in a conversation with billionaire investor Ron Baron. His declaration that it will be "the smartest AI in the world" has added fuel to an already overheated AI competition.
 
 Simultaneously, the AI industry is clashing on a new battlefield: **Agents**. As ChatGPT, Claude, and Gemini evolve beyond simple conversational AI into **autonomous agents that think and act independently**, the AI market has entered a new phase.
 
@@ -36,6 +36,12 @@ This article analyzes Grok 5 based on what Musk revealed in the above interview.
 - Designed to maximize "intelligence density per gigabyte"
 - **World's largest context window** (specific numbers not disclosed)
 - Reduced errors in long-form content analysis with **persistent memory** capability
+
+**Multimodal AI: Beyond Text**
+- **Integrating text, images, video, and audio**: Grok 5 is trained on inherently multimodal data
+- **Real-time video understanding**: Ability to analyze and comprehend video in real-time
+- **Real-time tool use and vision**: Equipped with real-time tool usage and vision capabilities
+- Evolving from a simple text AI into **an AI with comprehensive sensory perception**
 
 **Performance Goals**
 - Musk's claim: **"The smartest AI in the world by a significant margin, in every metric, without exception"**
