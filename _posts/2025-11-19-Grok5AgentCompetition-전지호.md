@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Grok 5와 치열해진 AI 에이전트 경쟁 - 머스크의 야심과 AGI를 향한 질주
-date: 2025-11-19 14:00:00 +0900
+date: 2025-11-19 09:00:00 +0900
 author: 전지호
 tags: ai grok xai elon-musk agi ai-agents competition llm autonomous-agents
 excerpt: 일론 머스크가 밝힌 Grok 5의 비전과 6조 파라미터의 의미, 그리고 Claude, GPT, Gemini가 벌이는 치열한 AI 에이전트 경쟁의 현주소를 분석합니다. AGI를 향한 질주 속에서 각 기업의 전략과 시장 판도를 살펴봅니다.
