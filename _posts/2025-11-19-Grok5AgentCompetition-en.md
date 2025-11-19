@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Grok 5 and the Intensifying AI Agent Competition - Musk's Ambition and the Race to AGI
-date: 2025-11-19 14:00:00 +0900
+date: 2025-11-19 09:00:00 +0900
 author: Jiho Jeon
 tags: ai grok xai elon-musk agi ai-agents competition llm autonomous-agents
 excerpt: Analyzing Elon Musk's vision for Grok 5 with 6 trillion parameters and the fierce AI agent competition among Claude, GPT, and Gemini. Exploring each company's strategy and market landscape in the race toward AGI.
