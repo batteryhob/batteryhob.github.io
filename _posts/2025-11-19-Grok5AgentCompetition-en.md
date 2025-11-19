@@ -23,6 +23,8 @@ This article examines Musk's vision for Grok 5 and its implications, while analy
 
 **Original Interview**: [Elon Musk at Baron Investment Conference - YouTube](https://youtu.be/GwfLkEOW37Q?si=IVjywkvLR4Lk87hR)
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/GwfLkEOW37Q" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 This article analyzes Grok 5 based on what Musk revealed in the above interview.
 
 ### 1. Key Points from the Interview
