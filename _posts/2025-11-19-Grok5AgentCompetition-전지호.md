@@ -23,6 +23,8 @@ ref: grok5-agent-competition
 
 **인터뷰 원본**: [Elon Musk at Baron Investment Conference - YouTube](https://youtu.be/GwfLkEOW37Q?si=IVjywkvLR4Lk87hR)
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/GwfLkEOW37Q" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 이 글은 위 인터뷰에서 머스크가 밝힌 Grok 5에 대한 내용을 중심으로 분석했습니다.
 
 ### 1. 인터뷰에서 드러난 핵심 내용
