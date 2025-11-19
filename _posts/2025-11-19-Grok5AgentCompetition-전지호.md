@@ -21,6 +21,10 @@ ref: grok5-agent-competition
 
 ## Grok 5: 머스크가 그리는 미래
 
+**인터뷰 원본**: [Elon Musk at Baron Investment Conference - YouTube](https://youtu.be/GwfLkEOW37Q?si=IVjywkvLR4Lk87hR)
+
+이 글은 위 인터뷰에서 머스크가 밝힌 Grok 5에 대한 내용을 중심으로 분석했습니다.
+
 ### 1. 인터뷰에서 드러난 핵심 내용
 
 **출시 시기: 2026년 1분기**

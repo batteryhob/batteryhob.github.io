@@ -21,6 +21,10 @@ This article examines Musk's vision for Grok 5 and its implications, while analy
 
 ## Grok 5: Musk's Vision for the Future
 
+**Original Interview**: [Elon Musk at Baron Investment Conference - YouTube](https://youtu.be/GwfLkEOW37Q?si=IVjywkvLR4Lk87hR)
+
+This article analyzes Grok 5 based on what Musk revealed in the above interview.
+
 ### 1. Key Points from the Interview
 
 **Release Timeline: Q1 2026**
