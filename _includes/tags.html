@@ -7,7 +7,8 @@
         {%- assign tag_posts = "" | split: "" -%}
         {%- for post in tag[1] -%}
           {%- assign post_lang = post.lang | default: "ko" -%}
-          {%- if post_lang == current_lang -%}
+          {%- assign post_year = post.date | date: "%Y" | plus: 0 -%}
+          {%- if post_lang == current_lang and post_year >= 2024 -%}
             {%- assign tag_posts = tag_posts | push: post -%}
           {%- endif -%}
         {%- endfor -%}
@@ -36,7 +37,8 @@
         {%- assign tag_count = 0 -%}
         {%- for post in tag[1] -%}
           {%- assign post_lang = post.lang | default: "ko" -%}
-          {%- if post_lang == current_lang -%}
+          {%- assign post_year = post.date | date: "%Y" | plus: 0 -%}
+          {%- if post_lang == current_lang and post_year >= 2024 -%}
             {%- assign tag_count = tag_count | plus: 1 -%}
           {%- endif -%}
         {%- endfor -%}

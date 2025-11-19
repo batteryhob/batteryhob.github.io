@@ -18,7 +18,8 @@ layout: default
         {%- for post in site.posts -%}
         {%- assign post_lang = post.lang | default: "ko" -%}
         {%- assign page_lang = page.lang | default: "ko" -%}
-        {%- if post_lang == page_lang -%}
+        {%- assign post_year = post.date | date: "%Y" | plus: 0 -%}
+        {%- if post_lang == page_lang and post_year >= 2024 -%}
         <li>
           {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
           <h3>
@@ -77,7 +78,8 @@ layout: default
           {%- assign tag_count = 0 -%}
           {%- for post in tag[1] -%}
             {%- assign post_lang = post.lang | default: "ko" -%}
-            {%- if post_lang == page_lang -%}
+            {%- assign post_year = post.date | date: "%Y" | plus: 0 -%}
+            {%- if post_lang == page_lang and post_year >= 2024 -%}
               {%- assign tag_count = tag_count | plus: 1 -%}
             {%- endif -%}
           {%- endfor -%}
