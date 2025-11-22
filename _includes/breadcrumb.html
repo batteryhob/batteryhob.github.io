@@ -1,0 +1,47 @@
+{% if page.layout == 'post' %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "{% if page.lang == 'en' %}Home{% else %}홈{% endif %}",
+      "item": "{{ site.url }}{{ site.baseurl }}{% if page.lang == 'en' %}/en{% endif %}/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "{% if page.lang == 'en' %}Posts{% else %}포스트{% endif %}",
+      "item": "{{ site.url }}{{ site.baseurl }}{% if page.lang == 'en' %}/en{% endif %}/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ page.title | escape }}"
+    }
+  ]
+}
+</script>
+{% elsif page.layout == 'tags' or page.url contains '/tags' %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "{% if page.lang == 'en' %}Home{% else %}홈{% endif %}",
+      "item": "{{ site.url }}{{ site.baseurl }}{% if page.lang == 'en' %}/en{% endif %}/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "{% if page.lang == 'en' %}Tags{% else %}태그{% endif %}"
+    }
+  ]
+}
+</script>
+{% endif %}
