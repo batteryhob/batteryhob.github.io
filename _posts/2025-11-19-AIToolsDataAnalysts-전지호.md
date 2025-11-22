@@ -5,6 +5,7 @@ date: 2025-11-19 10:00:00 +0900
 author: 전지호
 tags: ai data-analytics tools machine-learning automation python llm analytics
 excerpt: 2025년 현재 데이터 분석가들이 실무에서 가장 많이 활용하는 AI 도구와 최신 분석 방법론을 살펴봅니다. 생성형 AI, AutoML, 자동화 도구부터 LLM 기반 코드 생성까지, 데이터 분석의 새로운 패러다임을 소개합니다.
+image: https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=630&fit=crop
 use_math: false
 toc: true
 lang: ko

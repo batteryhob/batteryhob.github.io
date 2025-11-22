@@ -5,6 +5,7 @@ date: 2025-11-19 09:00:00 +0900
 author: Jiho Jeon
 tags: ai gemini google foundation-model llm benchmarks generative-ui deep-think
 excerpt: In-depth analysis of Google's Gemini 3, released November 18, 2025. Examining its crushing benchmark performance against GPT-5.1 and Claude Sonnet 4.5, revolutionary generative UI capabilities, and what this means for the AI landscape.
+image: https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&h=630&fit=crop
 use_math: false
 toc: true
 lang: en

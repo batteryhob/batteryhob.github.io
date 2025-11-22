@@ -5,6 +5,7 @@ date: 2025-11-18 12:00:00 +0900
 author: Jiho Jeon
 tags: ai sovereign-ai korea foundation-model llm government national-ai
 excerpt: Examining the vision, current status, and global significance of Korea's independent foundation model development project. Analyzing Korea's strategy to escape technological dependency and secure leadership in the AI era.
+image: https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&h=630&fit=crop
 use_math: false
 toc: true
 lang: en

@@ -5,6 +5,7 @@ date: 2025-11-19 09:00:00 +0900
 author: 전지호
 tags: ai gemini google foundation-model llm benchmarks generative-ui deep-think
 excerpt: 2025년 11월 18일 공개된 구글의 제미나이 3에 대한 심층 분석. GPT-5.1과 Claude Sonnet 4.5를 압도하는 벤치마크 성능, 혁명적인 생성형 UI 기능, 그리고 이것이 AI 산업에 미치는 영향을 살펴봅니다.
+image: https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&h=630&fit=crop
 use_math: false
 toc: true
 lang: ko

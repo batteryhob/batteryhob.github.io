@@ -5,6 +5,7 @@ date: 2025-11-19 10:00:00 +0900
 author: 전지호
 tags: ai data-analytics tools machine-learning automation python llm analytics
 excerpt: A comprehensive guide to the latest AI tools and methodologies that data analysts are using in 2025. From generative AI and AutoML to LLM-based code generation, discover the new paradigm of data analysis.
+image: https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=630&fit=crop
 use_math: false
 toc: true
 lang: en

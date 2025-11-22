@@ -5,6 +5,7 @@ date: 2025-11-19 09:00:00 +0900
 author: Jiho Jeon
 tags: ai grok xai elon-musk agi ai-agents competition llm autonomous-agents
 excerpt: Analyzing Elon Musk's vision for Grok 5 with 6 trillion parameters and the fierce AI agent competition among Claude, GPT, and Gemini. Exploring each company's strategy and market landscape in the race toward AGI.
+image: https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=630&fit=crop
 use_math: false
 toc: true
 lang: en

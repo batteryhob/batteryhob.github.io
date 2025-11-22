@@ -5,6 +5,7 @@ date: 2025-11-18 00:00:00 +0900
 author: 전지호
 tags: ai automation startup enterprise chatbot workflow
 excerpt: 2025년 대규모 투자를 받은 AI 업무 자동화 스타트업들의 차별화 전략과 도전 과제를 살펴봅니다. Distyl AI부터 Writesonic까지, 각 기업이 시장에서 살아남기 위해 어떤 무기를 갖고 있는지 분석합니다.
+image: https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=630&fit=crop
 use_math: false
 toc: true
 lang: ko

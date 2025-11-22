@@ -5,6 +5,7 @@ date: 2025-11-18 12:00:00 +0900
 author: 전지호
 tags: ai sovereign-ai korea foundation-model llm government national-ai
 excerpt: 한국이 추진 중인 독자 파운데이션 모델 개발 프로젝트의 비전과 현황, 그리고 글로벌 AI 주권 경쟁 속에서의 의의를 살펴봅니다. 기술 종속에서 벗어나 AI 시대의 주도권을 확보하려는 한국의 전략을 분석합니다.
+image: https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&h=630&fit=crop
 use_math: false
 toc: true
 lang: ko

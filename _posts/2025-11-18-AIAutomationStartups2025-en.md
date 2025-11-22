@@ -5,6 +5,7 @@ date: 2025-11-18 00:00:00 +0900
 author: Jiho Jeon
 tags: ai automation startup enterprise chatbot workflow
 excerpt: Examining the differentiation strategies and challenges of AI workplace automation startups that raised major funding in 2025. From Distyl AI to Writesonic, analyzing what weapons each company has to survive in the market.
+image: https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=630&fit=crop
 use_math: false
 toc: true
 lang: en
