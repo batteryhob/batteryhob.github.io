@@ -29,7 +29,7 @@ lang: ko_KR
 baseurl: ""
 url: "https://batteryhob.github.io"
 twitter_username: ""
-github_username:  ""
+github_username: "batteryhob"
 
 # SEO settings
 author:
@@ -38,7 +38,8 @@ author:
 
 social:
   name: 배터리호
-  links: []
+  links:
+    - https://github.com/batteryhob
 
 # Build settings
 theme: minima
