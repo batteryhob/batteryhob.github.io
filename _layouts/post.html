@@ -3,7 +3,12 @@ layout: default
 ---
 <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <header class="blog-header" style="background-image: url(https://www.vactualpapers.com/web/wallpapers/modern-material-design-full-hd-wallpaper-no-333/1920x1920.png)">
+  {%- if page.header_image -%}
+  {%- assign header_bg = page.header_image -%}
+  {%- else -%}
+  {%- assign header_bg = "https://www.vactualpapers.com/web/wallpapers/modern-material-design-full-hd-wallpaper-no-333/1920x1920.png" -%}
+  {%- endif -%}
+  <header class="blog-header" style="background-image: url({{ header_bg }})">
     <div class="wrapper">
         <h1 class="post-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
         <p class="post-meta">
