@@ -2,6 +2,18 @@
   <data class="u-url" href="{{ "/" | relative_url }}"></data>
 
   <div class="wrapper">
+    {%- assign current_lang = page.lang | default: "ko" -%}
+    {%- if current_lang == "ko" -%}
+      {%- assign base_url = "" -%}
+    {%- else -%}
+      {%- assign base_url = "/en" -%}
+    {%- endif -%}
+
+    <div class="footer-nav">
+      <a href="{{ base_url | append: '/about/' | relative_url }}">{{ site.data.i18n[current_lang].nav_about }}</a>
+      <a href="{{ base_url | append: '/privacy/' | relative_url }}">{{ site.data.i18n[current_lang].nav_privacy }}</a>
+      <a href="{{ base_url | append: '/contact/' | relative_url }}">{{ site.data.i18n[current_lang].nav_contact }}</a>
+    </div>
 
     <h2 class="footer-heading">
       Copyright © 2021-{{ 'now' | date: "%Y" }}
@@ -11,7 +23,6 @@
       <div class="footer-col footer-col-1">
         <ul class="contact-list">
           <li class="p-name">
-            {%- assign current_lang = page.lang | default: "ko" -%}
             {{ site.data.i18n[current_lang].author_name }}
             </li>
             {%- if site.email -%}
@@ -21,7 +32,6 @@
       </div>
 
       <div class="footer-col footer-col-3">
-        {%- assign current_lang = page.lang | default: "ko" -%}
         <p>{{ site.data.i18n[current_lang].footer_description }}</p>
       </div>
     </div>

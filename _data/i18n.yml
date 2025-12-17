@@ -13,6 +13,11 @@ ko:
   # Author description
   author_intro: "자율적으로 사고하고 행동하는 AI 에이전트를 만드는 개발자입니다. MLOps, 클라우드 네이티브 아키텍처, 그리고 AI 협업의 미래에 관심이 많습니다."
 
+  # Footer navigation
+  nav_about: "소개"
+  nav_privacy: "개인정보처리방침"
+  nav_contact: "연락처"
+
 en:
   site_title: "BatteryHo Tech Blog"
   author_name: "BatteryHo"
@@ -24,3 +29,8 @@ en:
 
   # Author description
   author_intro: "AI Agent Developer crafting intelligent autonomous systems that think and act. Passionate about MLOps, cloud-native architectures, and the future of AI collaboration."
+
+  # Footer navigation
+  nav_about: "About"
+  nav_privacy: "Privacy Policy"
+  nav_contact: "Contact"
