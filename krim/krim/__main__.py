@@ -28,6 +28,7 @@ from krim.mcp import load_mcp_config, start_mcp_servers
 from krim.skills import discover_skills, inject_skill
 from krim.prompt import build_system_prompt
 from krim.git import is_git_repo, commit_dirty, auto_commit, undo
+from krim.ui import print_banner, print_banner_oneliner, create_session, prompt_input
 
 console = Console()
 
@@ -130,10 +131,14 @@ def main():
             console.print(f"  [bold]{name}[/]  {first_line}")
         return
 
-    # header
-    console.print(f"[bold]krim[/] v{__version__}  [dim]{provider}/{model_name}  max_turns={max_turns}[/]")
-    if config.project_dir:
-        console.print(f"[dim]config: {config.project_dir}[/]")
+    # header - full banner for interactive, one-liner for single prompt
+    is_interactive = args.prompt is None
+    if is_interactive:
+        print_banner(provider, model_name, max_turns, str(config.project_dir) if config.project_dir else None)
+    else:
+        print_banner_oneliner(provider, model_name, max_turns)
+        if config.project_dir:
+            console.print(f"[dim]config: {config.project_dir}[/]")
     if verbose:
         console.print(f"[dim]verbose: on | safety: {'ask' if config.ask_by_default else 'off'}[/]")
         console.print(f"[dim]deny_patterns: {len(config.deny_patterns)} | allow_commands: {len(config.allow_commands)}[/]")
@@ -205,11 +210,10 @@ def main():
         return
 
     # interactive mode
-    console.print("[dim]interactive mode. type /help for commands, 'exit' to quit.[/]\n")
+    session = create_session()
     while True:
-        try:
-            user_input = console.input("[bold green]> [/]")
-        except (EOFError, KeyboardInterrupt):
+        user_input = prompt_input(session)
+        if user_input is None:
             console.print("\n[dim]bye[/]")
             break
 
