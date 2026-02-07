@@ -284,8 +284,8 @@ class Agent:
                 for tc, result in tool_results:
                     self.messages.append(_build_tool_result_openai(tc.id, tc.name, result))
 
-        # max turns reached
-        if turn >= self.max_turns:
+        else:
+            # while-else: loop condition became false (not break) = all turns used with tool calls still pending
             console.print(f"\n[yellow]reached max turns ({self.max_turns})[/]")
             # inject max_steps prompt for graceful summary
             self.messages.append({"role": "user", "content": MAX_STEPS_PROMPT})
