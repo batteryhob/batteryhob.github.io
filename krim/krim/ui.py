@@ -15,13 +15,18 @@ console = Console()
 
 # -- banner --
 
-LOGO = r"""
- ██╗  ██╗██████╗ ██╗███╗   ███╗
- ██║ ██╔╝██╔══██╗██║████╗ ████║
- █████╔╝ ██████╔╝██║██╔████╔██║
- ██╔═██╗ ██╔══██╗██║██║╚██╔╝██║
- ██║  ██╗██║  ██║██║██║ ╚═╝ ██║
- ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═╝     ╚═╝"""
+LOGO_LINES = [
+    "       ●         ●",
+    "     ▄███▄▄   ▄▄███▄",
+    "      ▀▀▀▀▀▀ ▀▀▀▀▀▀",
+    "",
+    " ██╗  ██╗██████╗ ██╗███╗   ███╗",
+    " ██║ ██╔╝██╔══██╗██║████╗ ████║",
+    " █████╔╝ ██████╔╝██║██╔████╔██║",
+    " ██╔═██╗ ██╔══██╗██║██║╚██╔╝██║",
+    " ██║  ██╗██║  ██║██║██║ ╚═╝ ██║",
+    " ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═╝     ╚═╝",
+]
 
 TAGLINE = "trust the model, keep the harness light."
 
@@ -30,7 +35,8 @@ SLASH_COMMANDS = ["/help", "/tokens", "/compact", "/config", "/undo", "/verbose"
 
 def print_banner(provider: str, model_name: str, max_turns: int, project_dir: str | None = None):
     """Print the welcome banner with config info."""
-    console.print(f"[bold cyan]{LOGO}[/]")
+    for line in LOGO_LINES:
+        console.print(f"[bold cyan]{line}[/]", highlight=False)
     console.print(f"  [dim italic]{TAGLINE}[/]")
     console.print()
 
