@@ -59,8 +59,8 @@ class BashTool(Tool):
             if not prompt_user(command):
                 return "error: command rejected by user"
 
-        # append cwd capture so we can track directory changes (cd, pushd, etc.)
-        wrapped = f'{command}; echo "{_CWD_MARKER}"; pwd'
+        # wrap command to: 1) capture its exit code, 2) track cwd changes, 3) exit with original code
+        wrapped = f'{command}\n__krim_ec=$?\necho "{_CWD_MARKER}"\npwd\nexit $__krim_ec'
 
         try:
             result = subprocess.run(
