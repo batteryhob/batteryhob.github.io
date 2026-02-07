@@ -1,8 +1,13 @@
 """OpenAI model provider (codex / gpt models)."""
 
+from __future__ import annotations
+
 import json
 import os
+from typing import Callable
+
 from openai import OpenAI
+
 from krim.models.base import Model, ModelResponse, ToolCall
 
 
@@ -11,11 +16,15 @@ class OpenAIModel(Model):
         self.model = model
         self.client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
-    def chat(self, messages: list[dict], tools: list[dict], stream_callback=None) -> ModelResponse:
-        # convert tool schemas to openai format
+    def chat(
+        self,
+        messages: list[dict],
+        tools: list[dict],
+        stream_callback: Callable[[str], None] | None = None,
+    ) -> ModelResponse:
         oai_tools = self._convert_tools(tools) if tools else None
 
-        kwargs = {
+        kwargs: dict = {
             "model": self.model,
             "messages": messages,
         }
@@ -30,21 +39,21 @@ class OpenAIModel(Model):
 
     def _convert_tools(self, tools: list[dict]) -> list[dict]:
         """Convert krim tool schemas to OpenAI function calling format."""
-        oai_tools = []
-        for t in tools:
-            oai_tools.append({
+        return [
+            {
                 "type": "function",
                 "function": {
                     "name": t["name"],
                     "description": t["description"],
                     "parameters": t["input_schema"],
                 },
-            })
-        return oai_tools
+            }
+            for t in tools
+        ]
 
-    def _stream(self, kwargs, callback) -> ModelResponse:
+    def _stream(self, kwargs: dict, callback: Callable[[str], None]) -> ModelResponse:
         kwargs["stream"] = True
-        text_parts = []
+        text_parts: list[str] = []
         tool_calls_map: dict[int, dict] = {}
 
         for chunk in self.client.chat.completions.create(**kwargs):
@@ -68,7 +77,7 @@ class OpenAIModel(Model):
                     if tc.function and tc.function.arguments:
                         tool_calls_map[idx]["args"] += tc.function.arguments
 
-        tool_calls = []
+        tool_calls: list[ToolCall] = []
         for idx in sorted(tool_calls_map):
             tc = tool_calls_map[idx]
             args = json.loads(tc["args"]) if tc["args"] else {}
@@ -81,7 +90,7 @@ class OpenAIModel(Model):
     def _parse(self, resp) -> ModelResponse:
         msg = resp.choices[0].message
         text = msg.content
-        tool_calls = []
+        tool_calls: list[ToolCall] = []
         if msg.tool_calls:
             for tc in msg.tool_calls:
                 args = json.loads(tc.function.arguments) if tc.function.arguments else {}

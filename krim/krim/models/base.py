@@ -1,8 +1,10 @@
 """Abstract model interface."""
 
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Any
+from typing import Callable
 
 
 @dataclass
@@ -25,6 +27,6 @@ class Model(ABC):
         self,
         messages: list[dict],
         tools: list[dict],
-        stream_callback=None,
+        stream_callback: Callable[[str], None] | None = None,
     ) -> ModelResponse:
         ...

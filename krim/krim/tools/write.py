@@ -1,6 +1,9 @@
 """Write file tool."""
 
+from __future__ import annotations
+
 import os
+
 from krim.tools.base import Tool
 
 
@@ -15,9 +18,12 @@ class WriteTool(Tool):
     def run(self, path: str, content: str) -> str:
         path = os.path.expanduser(path)
         try:
-            os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+            parent = os.path.dirname(path)
+            if parent:
+                os.makedirs(parent, exist_ok=True)
             with open(path, "w") as f:
                 f.write(content)
-            return f"wrote {path}"
+            lines = content.count("\n") + (1 if content and not content.endswith("\n") else 0)
+            return f"wrote {path} ({lines} lines)"
         except Exception as e:
             return f"error: {e}"

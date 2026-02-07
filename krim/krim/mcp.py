@@ -1,27 +1,36 @@
 """MCP (Model Context Protocol) client support.
 
-Connect to external MCP servers via stdio or SSE and use their tools.
-Config lives in ~/.krim/mcp.json or ./krim.json
+Connects to external MCP servers via stdio with proper Content-Length framing.
+Config lives in ~/.krim/mcp.json or .krim/mcp.json
 """
+
+from __future__ import annotations
 
 import json
 import os
 import subprocess
 from dataclasses import dataclass
+from pathlib import Path
+
+from rich.console import Console
+
 from krim.tools.base import Tool
+from krim.truncate import truncate
+
+console = Console()
 
 
 @dataclass
 class McpServerConfig:
     name: str
-    command: list[str]  # e.g. ["npx", "-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
+    command: list[str]
     env: dict[str, str] | None = None
 
 
 class McpTool(Tool):
     """A tool proxied from an MCP server."""
 
-    def __init__(self, name: str, description: str, parameters: dict, server: "McpServer"):
+    def __init__(self, name: str, description: str, parameters: dict, server: McpServer):
         self.name = name
         self.description = description
         self.parameters = parameters
@@ -32,7 +41,7 @@ class McpTool(Tool):
 
 
 class McpServer:
-    """Manages a single MCP server process via stdio JSON-RPC."""
+    """Manages a single MCP server process via stdio with Content-Length framing."""
 
     def __init__(self, config: McpServerConfig):
         self.config = config
@@ -51,51 +60,86 @@ class McpServer:
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             env=env,
-            text=True,
         )
         self._initialize()
         self._discover_tools()
 
     def stop(self):
         if self.process:
-            self.process.terminate()
+            try:
+                self.process.terminate()
+                self.process.wait(timeout=5)
+            except Exception:
+                self.process.kill()
             self.process = None
 
-    def _send(self, method: str, params: dict = None) -> dict:
+    def _send_raw(self, data: bytes):
+        """Send a message with Content-Length header framing."""
+        header = f"Content-Length: {len(data)}\r\n\r\n".encode()
+        self.process.stdin.write(header + data)
+        self.process.stdin.flush()
+
+    def _recv_raw(self) -> bytes:
+        """Read a Content-Length framed message."""
+        # read headers
+        content_length = 0
+        while True:
+            line = self.process.stdout.readline()
+            if not line:
+                raise ConnectionError("MCP server closed connection")
+            line_str = line.decode("utf-8", errors="replace").strip()
+            if not line_str:
+                break  # empty line = end of headers
+            if line_str.lower().startswith("content-length:"):
+                content_length = int(line_str.split(":", 1)[1].strip())
+
+        if content_length == 0:
+            raise ConnectionError("MCP server sent no Content-Length")
+
+        data = self.process.stdout.read(content_length)
+        return data
+
+    def _send(self, method: str, params: dict | None = None) -> dict:
         self._request_id += 1
         msg = {
             "jsonrpc": "2.0",
             "id": self._request_id,
             "method": method,
         }
-        if params:
+        if params is not None:
             msg["params"] = params
 
-        raw = json.dumps(msg) + "\n"
-        self.process.stdin.write(raw)
-        self.process.stdin.flush()
+        self._send_raw(json.dumps(msg).encode("utf-8"))
 
-        line = self.process.stdout.readline()
-        if not line:
-            return {"error": "no response from MCP server"}
-        return json.loads(line)
+        # read responses, skipping notifications (no "id" field)
+        while True:
+            raw = self._recv_raw()
+            resp = json.loads(raw)
+            if "id" in resp:
+                return resp
+            # else it's a notification, skip it
 
     def _initialize(self):
-        self._send("initialize", {
+        resp = self._send("initialize", {
             "protocolVersion": "2024-11-05",
             "capabilities": {},
             "clientInfo": {"name": "krim", "version": "0.1.0"},
         })
+        # send initialized notification
+        notify = {
+            "jsonrpc": "2.0",
+            "method": "notifications/initialized",
+        }
+        self._send_raw(json.dumps(notify).encode("utf-8"))
+        return resp
 
     def _discover_tools(self):
         resp = self._send("tools/list")
         if "result" not in resp:
             return
         for t in resp["result"].get("tools", []):
-            props = {}
             schema = t.get("inputSchema", {})
-            if "properties" in schema:
-                props = schema["properties"]
+            props = schema.get("properties", {})
             self.tools.append(McpTool(
                 name=t["name"],
                 description=t.get("description", ""),
@@ -104,11 +148,17 @@ class McpServer:
             ))
 
     def call_tool(self, name: str, args: dict) -> str:
-        resp = self._send("tools/call", {"name": name, "arguments": args})
+        try:
+            resp = self._send("tools/call", {"name": name, "arguments": args})
+        except Exception as e:
+            return f"error: MCP call failed: {e}"
+
         if "error" in resp:
-            return f"error: {resp['error']}"
+            err = resp["error"]
+            msg = err.get("message", str(err)) if isinstance(err, dict) else str(err)
+            return f"error: {msg}"
+
         result = resp.get("result", {})
-        # MCP tool results have content array
         contents = result.get("content", [])
         parts = []
         for c in contents:
@@ -116,27 +166,40 @@ class McpServer:
                 parts.append(c["text"])
             else:
                 parts.append(json.dumps(c))
-        return "\n".join(parts) or "(no output)"
+        out = "\n".join(parts) or "(no output)"
+        return truncate(out, 30_000)
 
 
-def load_mcp_config() -> list[McpServerConfig]:
-    """Load MCP server configs from ~/.krim/mcp.json or ./krim.json"""
+def load_mcp_config(global_dir: Path | None = None, project_dir: Path | None = None) -> list[McpServerConfig]:
+    """Load MCP server configs from ~/.krim/mcp.json and .krim/mcp.json"""
     configs = []
-    for path in [os.path.expanduser("~/.krim/mcp.json"), "krim.json"]:
-        if os.path.isfile(path):
-            with open(path) as f:
-                data = json.load(f)
-            for name, cfg in data.get("mcpServers", {}).items():
-                configs.append(McpServerConfig(
-                    name=name,
-                    command=cfg["command"],
-                    env=cfg.get("env"),
-                ))
+    search_paths = []
+    if global_dir:
+        search_paths.append(global_dir / "mcp.json")
+    else:
+        search_paths.append(Path.home() / ".krim" / "mcp.json")
+    if project_dir:
+        search_paths.append(project_dir / "mcp.json")
+
+    for path in search_paths:
+        if path.is_file():
+            try:
+                with open(path) as f:
+                    data = json.load(f)
+                for name, cfg in data.get("mcpServers", {}).items():
+                    configs.append(McpServerConfig(
+                        name=name,
+                        command=cfg["command"],
+                        env=cfg.get("env"),
+                    ))
+            except Exception as e:
+                console.print(f"[yellow]mcp: failed to load {path}: {e}[/]")
+
     return configs
 
 
-def start_mcp_servers(configs: list[McpServerConfig]) -> list[McpTool]:
-    """Start all MCP servers and collect their tools."""
+def start_mcp_servers(configs: list[McpServerConfig]) -> tuple[list[McpTool], list[McpServer]]:
+    """Start all MCP servers and collect their tools. Returns (tools, servers) for cleanup."""
     all_tools = []
     servers = []
     for cfg in configs:
@@ -145,7 +208,7 @@ def start_mcp_servers(configs: list[McpServerConfig]) -> list[McpTool]:
             server.start()
             servers.append(server)
             all_tools.extend(server.tools)
+            console.print(f"[dim]mcp: {cfg.name} started ({len(server.tools)} tools)[/]")
         except Exception as e:
-            from rich.console import Console
-            Console().print(f"[yellow]mcp: failed to start {cfg.name}: {e}[/]")
-    return all_tools
+            console.print(f"[yellow]mcp: failed to start {cfg.name}: {e}[/]")
+    return all_tools, servers

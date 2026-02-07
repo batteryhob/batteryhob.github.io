@@ -4,7 +4,7 @@ build-backend = "setuptools.backends._legacy:_Backend"
 
 [project]
 name = "krim"
-version = "0.1.0"
+version = "0.2.0"
 description = "Thin CLI agent. Trust the model, keep the harness light."
 requires-python = ">=3.10"
 dependencies = [

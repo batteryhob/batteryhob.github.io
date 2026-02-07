@@ -1,7 +1,8 @@
 """Base tool interface."""
 
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
-from typing import Any
 
 
 class Tool(ABC):
@@ -14,12 +15,20 @@ class Tool(ABC):
         ...
 
     def schema(self) -> dict:
+        """Generate tool schema in Anthropic format (also used as canonical internal format)."""
+        required = [
+            k for k, v in self.parameters.items()
+            if not v.get("optional", False)
+        ]
         return {
             "name": self.name,
             "description": self.description,
             "input_schema": {
                 "type": "object",
-                "properties": self.parameters,
-                "required": list(self.parameters.keys()),
+                "properties": {
+                    k: {key: val for key, val in v.items() if key != "optional"}
+                    for k, v in self.parameters.items()
+                },
+                "required": required,
             },
         }
