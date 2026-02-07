@@ -9,7 +9,6 @@ Search paths: ~/.krim/skills/ and .krim/skills/ (project overrides global)
 
 from __future__ import annotations
 
-import os
 from dataclasses import dataclass
 from pathlib import Path
 
