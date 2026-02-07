@@ -32,6 +32,50 @@ from krim.git import is_git_repo, commit_dirty, auto_commit, undo
 console = Console()
 
 
+def _handle_slash_command(cmd: str, agent: Agent, config: KrimConfig, verbose: bool):
+    """Handle interactive slash commands."""
+    parts = cmd.split(maxsplit=1)
+    command = parts[0].lower()
+
+    if command == "/help":
+        console.print(
+            "[bold]Commands:[/]\n"
+            "  /help      - show this help\n"
+            "  /tokens    - show token usage\n"
+            "  /compact   - force context compaction\n"
+            "  /config    - show current config\n"
+            "  /undo      - undo last krim commit\n"
+            "  /verbose   - toggle verbose mode\n"
+            "  exit       - quit interactive mode"
+        )
+    elif command == "/tokens":
+        from krim.compaction import estimate_message_tokens
+        tokens = estimate_message_tokens(agent.messages)
+        console.print(f"[dim]messages: {len(agent.messages)} | ~{tokens:,} tokens[/]")
+        console.print(f"[dim]total turns: {agent.total_turns} | total tool calls: {agent.total_tool_calls}[/]")
+    elif command == "/compact":
+        agent.force_compact()
+    elif command == "/config":
+        console.print(f"[dim]provider: {config.provider}[/]")
+        console.print(f"[dim]model: {config.model or 'default'}[/]")
+        console.print(f"[dim]max_turns: {config.max_turns}[/]")
+        console.print(f"[dim]auto_commit: {config.auto_commit}[/]")
+        console.print(f"[dim]safety: {'ask' if config.ask_by_default else 'off'}[/]")
+        console.print(f"[dim]global_dir: {config.global_dir}[/]")
+        console.print(f"[dim]project_dir: {config.project_dir or 'none'}[/]")
+        if config.krim_md:
+            console.print(f"[dim]KRIM.md: {len(config.krim_md)} chars[/]")
+        if config.rules:
+            console.print(f"[dim]rules: {len(config.rules)} loaded[/]")
+    elif command == "/undo":
+        undo()
+    elif command == "/verbose":
+        agent.verbose = not agent.verbose
+        console.print(f"[dim]verbose: {'on' if agent.verbose else 'off'}[/]")
+    else:
+        console.print(f"[dim]unknown command: {command}. try /help[/]")
+
+
 def parse_args():
     p = argparse.ArgumentParser(
         prog="krim",
@@ -54,6 +98,8 @@ def parse_args():
                    help="auto-commit after agent edits")
     p.add_argument("--no-safety", action="store_true",
                    help="disable bash safety prompts (auto-allow all)")
+    p.add_argument("--verbose", action="store_true",
+                   help="show debug info (token counts, config details)")
     p.add_argument("--version", "-v", action="version", version=f"krim {__version__}")
     return p.parse_args()
 
@@ -70,6 +116,7 @@ def main():
     max_turns = args.max_turns if args.max_turns is not None else config.max_turns
     do_auto_commit = args.auto_commit if args.auto_commit is not None else config.auto_commit
 
+    verbose = args.verbose
     if args.no_safety:
         config.ask_by_default = False
 
@@ -87,6 +134,9 @@ def main():
     console.print(f"[bold]krim[/] v{__version__}  [dim]{provider}/{model_name}  max_turns={max_turns}[/]")
     if config.project_dir:
         console.print(f"[dim]config: {config.project_dir}[/]")
+    if verbose:
+        console.print(f"[dim]verbose: on | safety: {'ask' if config.ask_by_default else 'off'}[/]")
+        console.print(f"[dim]deny_patterns: {len(config.deny_patterns)} | allow_commands: {len(config.allow_commands)}[/]")
 
     # create model
     model = create_model(provider, model_name)
@@ -140,6 +190,7 @@ def main():
         tools=tools,
         mcp_tools=mcp_tools,
         max_turns=max_turns,
+        verbose=verbose,
     )
 
     # git: protect uncommitted changes
@@ -154,7 +205,7 @@ def main():
         return
 
     # interactive mode
-    console.print("[dim]interactive mode. type 'exit' to quit, '/undo' to undo last commit.[/]\n")
+    console.print("[dim]interactive mode. type /help for commands, 'exit' to quit.[/]\n")
     while True:
         try:
             user_input = console.input("[bold green]> [/]")
@@ -171,8 +222,8 @@ def main():
             break
 
         # slash commands
-        if stripped == "/undo":
-            undo()
+        if stripped.startswith("/"):
+            _handle_slash_command(stripped, agent, config, verbose)
             continue
 
         agent.run(user_input)

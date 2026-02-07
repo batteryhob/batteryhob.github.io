@@ -1,0 +1,19 @@
+{
+  "provider": "claude",
+  "model": null,
+  "max_turns": 15,
+  "max_output_chars": 30000,
+  "auto_commit": false,
+  "allow_commands": [
+    "ls", "cat", "head", "tail", "find", "grep", "rg", "wc",
+    "git status", "git diff", "git log", "git branch",
+    "python -m py_compile", "python -c",
+    "npm run lint", "npm test", "pytest", "make"
+  ],
+  "deny_patterns": [
+    "rm -rf /", "rm -rf ~", "rm -rf /*",
+    "> /dev/sda", "mkfs.", "dd if=",
+    ":(){:|:&};:", "chmod -R 777 /"
+  ],
+  "ask_by_default": true
+}

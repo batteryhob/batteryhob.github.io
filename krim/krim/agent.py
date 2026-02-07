@@ -6,11 +6,13 @@ Features:
 - Doom loop detection (same tool call repeated)
 - Context compaction when approaching token limits
 - Max turns enforcement with graceful degradation
+- Per-run stats tracking (turns, tool calls, token estimates)
 """
 
 from __future__ import annotations
 
 import json
+from dataclasses import dataclass, field
 
 from rich.console import Console
 from rich.panel import Panel
@@ -18,10 +20,23 @@ from rich.panel import Panel
 from krim.models.base import Model, ModelResponse, ToolCall
 from krim.tools import get_tool, tool_schemas
 from krim.tools.base import Tool
-from krim.compaction import needs_compaction, compact
+from krim.compaction import needs_compaction, compact, estimate_message_tokens
 from krim.retry import with_retry
 
 console = Console()
+
+
+@dataclass
+class RunStats:
+    """Stats for a single agent.run() invocation."""
+    turns: int = 0
+    tool_calls: int = 0
+    compactions: int = 0
+    tool_call_names: dict[str, int] = field(default_factory=dict)
+
+    def record_tool_call(self, name: str):
+        self.tool_calls += 1
+        self.tool_call_names[name] = self.tool_call_names.get(name, 0) + 1
 
 MAX_STEPS_PROMPT = (
     "You have reached the maximum number of tool calls for this turn. "
@@ -82,16 +97,23 @@ class Agent:
         tools: list[Tool],
         mcp_tools: list[Tool] | None = None,
         max_turns: int = 10,
+        verbose: bool = False,
     ):
         self.model = model
         self.provider = provider
         self.max_turns = max_turns
         self.tools = tools
         self.mcp_tools = mcp_tools or []
+        self.verbose = verbose
         self.messages: list[dict] = [{"role": "system", "content": system_prompt}]
 
         # doom loop detection: track recent tool calls
         self._recent_calls: list[str] = []
+
+        # cumulative stats
+        self.last_stats: RunStats | None = None
+        self.total_turns: int = 0
+        self.total_tool_calls: int = 0
 
     # -- tool management --
 
@@ -138,28 +160,36 @@ class Agent:
     # -- display --
 
     def _print_tool_call(self, name: str, args: dict):
-        summary = f"[bold cyan]{name}[/]"
+        icon = {"bash": ">>", "read": "<<", "write": "=>", "edit": "<>"}.get(name, "::")
+        summary = f"[bold cyan]{icon} {name}[/]"
         if name == "bash":
-            summary += f"  `{args.get('command', '')}`"
+            cmd = args.get("command", "")
+            # show first line of multi-line commands
+            first_line = cmd.split("\n")[0]
+            if len(first_line) > 100:
+                first_line = first_line[:97] + "..."
+            summary += f"  `{first_line}`"
         elif name in ("read", "write", "edit"):
-            summary += f"  {args.get('path', '')}"
+            path = args.get("path", "")
+            summary += f"  {path}"
         else:
             summary += f"  {json.dumps(args, ensure_ascii=False)[:80]}"
         console.print(summary)
 
     def _print_tool_result(self, result: str):
         lines = result.splitlines()
-        preview = "\n".join(lines[:15])
-        if len(lines) > 15:
-            preview += f"\n... ({len(lines) - 15} more lines)"
-        console.print(Panel(preview, style="dim", expand=False))
+        preview = "\n".join(lines[:20])
+        if len(lines) > 20:
+            preview += f"\n[dim]... ({len(lines) - 20} more lines)[/]"
+        console.print(Panel(preview, border_style="dim", expand=False, padding=(0, 1)))
 
     # -- core loop --
 
-    def run(self, user_input: str):
+    def run(self, user_input: str) -> RunStats:
         """Execute a single user request through the agent loop."""
         self.messages.append({"role": "user", "content": user_input})
         self._recent_calls.clear()
+        stats = RunStats()
 
         # cache tool schemas (deterministic order for prompt cache)
         cached_schemas = self._all_tool_schemas()
@@ -170,12 +200,19 @@ class Agent:
         turn = 0
         while turn < self.max_turns:
             turn += 1
-            console.print(f"\n[dim]--- turn {turn}/{self.max_turns} ---[/]")
+            stats.turns = turn
+
+            if self.verbose:
+                tokens = estimate_message_tokens(self.messages)
+                console.print(f"\n[dim]--- turn {turn}/{self.max_turns}  ~{tokens:,} tokens ---[/]")
+            else:
+                console.print(f"\n[dim]--- turn {turn}/{self.max_turns} ---[/]")
 
             # check for compaction
             if needs_compaction(self.messages):
                 console.print("[dim]compacting conversation...[/]")
                 self.messages = compact(self.messages)
+                stats.compactions += 1
 
             # stream callback
             def stream_cb(text: str):
@@ -231,6 +268,7 @@ class Agent:
                 result = self._execute_tool(tc.name, tc.args)
                 self._print_tool_result(result)
                 tool_results.append((tc, result))
+                stats.record_tool_call(tc.name)
 
             # add tool results to messages
             if self.provider == "claude":
@@ -262,3 +300,31 @@ class Agent:
                     self.messages.append({"role": "assistant", "content": final.text})
             except Exception:
                 pass
+
+        # print run stats
+        self._print_stats(stats)
+        self.last_stats = stats
+        self.total_turns += stats.turns
+        self.total_tool_calls += stats.tool_calls
+        return stats
+
+    def _print_stats(self, stats: RunStats):
+        parts = [f"turns: {stats.turns}"]
+        if stats.tool_calls:
+            tools_summary = ", ".join(f"{n}:{c}" for n, c in sorted(stats.tool_call_names.items()))
+            parts.append(f"tool calls: {stats.tool_calls} ({tools_summary})")
+        if stats.compactions:
+            parts.append(f"compactions: {stats.compactions}")
+        tokens = estimate_message_tokens(self.messages)
+        parts.append(f"~{tokens:,} tokens")
+        console.print(f"\n[dim]{' | '.join(parts)}[/]")
+
+    def token_count(self) -> int:
+        return estimate_message_tokens(self.messages)
+
+    def force_compact(self):
+        """Manually trigger compaction."""
+        before = estimate_message_tokens(self.messages)
+        self.messages = compact(self.messages)
+        after = estimate_message_tokens(self.messages)
+        console.print(f"[dim]compacted: ~{before:,} → ~{after:,} tokens[/]")

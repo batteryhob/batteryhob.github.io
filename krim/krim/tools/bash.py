@@ -1,17 +1,20 @@
-"""Bash execution tool with safety checks and output truncation."""
+"""Bash execution tool with safety checks, persistent cwd, and output truncation."""
 
 from __future__ import annotations
 
+import os
 import subprocess
 
 from krim.tools.base import Tool
 from krim.safety import Action, check_command, prompt_user
 from krim.truncate import truncate
 
+_CWD_MARKER = "__KRIM_CWD__"
+
 
 class BashTool(Tool):
     name = "bash"
-    description = "Run a shell command. Returns stdout and stderr. Dangerous commands require user approval."
+    description = "Run a shell command. Returns stdout and stderr. Working directory persists between calls."
     parameters = {
         "command": {"type": "string", "description": "Shell command to execute"},
         "timeout": {"type": "integer", "description": "Timeout in seconds (default 120)", "optional": True},
@@ -22,7 +25,7 @@ class BashTool(Tool):
         self._allow_commands: list[str] = []
         self._ask_by_default: bool = True
         self._max_output_chars: int = 30_000
-        self._cwd: str | None = None
+        self._cwd: str = os.getcwd()
 
     def configure(
         self,
@@ -36,7 +39,12 @@ class BashTool(Tool):
         self._allow_commands = allow_commands
         self._ask_by_default = ask_by_default
         self._max_output_chars = max_output_chars
-        self._cwd = cwd
+        if cwd:
+            self._cwd = cwd
+
+    @property
+    def cwd(self) -> str:
+        return self._cwd
 
     def run(self, command: str, timeout: int = 120) -> str:
         # safety check
@@ -51,22 +59,36 @@ class BashTool(Tool):
             if not prompt_user(command):
                 return "error: command rejected by user"
 
+        # append cwd capture so we can track directory changes (cd, pushd, etc.)
+        wrapped = f'{command}; echo "{_CWD_MARKER}"; pwd'
+
         try:
             result = subprocess.run(
-                command,
+                wrapped,
                 shell=True,
                 capture_output=True,
                 text=True,
                 timeout=timeout,
                 cwd=self._cwd,
             )
+
+            stdout = result.stdout or ""
+
+            # extract and update cwd from the marker
+            if _CWD_MARKER in stdout:
+                parts = stdout.rsplit(_CWD_MARKER, 1)
+                stdout = parts[0]
+                new_cwd = parts[1].strip()
+                if new_cwd and os.path.isdir(new_cwd):
+                    self._cwd = new_cwd
+
             out = ""
-            if result.stdout:
-                out += result.stdout
+            if stdout.strip():
+                out += stdout.strip()
             if result.stderr:
                 if out:
                     out += "\n"
-                out += result.stderr
+                out += result.stderr.strip()
             if result.returncode != 0:
                 out += f"\n[exit code: {result.returncode}]"
 

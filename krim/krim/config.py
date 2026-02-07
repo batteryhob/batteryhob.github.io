@@ -87,8 +87,12 @@ def _find_project_dir() -> Path | None:
 
 def _load_json(path: Path) -> dict:
     if path.is_file():
-        with open(path) as f:
-            return json.load(f)
+        try:
+            with open(path) as f:
+                return json.load(f)
+        except (json.JSONDecodeError, ValueError) as e:
+            import sys
+            print(f"warning: malformed JSON in {path}: {e}", file=sys.stderr)
     return {}
 
 

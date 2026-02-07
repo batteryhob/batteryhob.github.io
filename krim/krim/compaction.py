@@ -73,9 +73,11 @@ def compact(messages: list[dict], max_tokens: int = 120_000) -> list[dict]:
                 if isinstance(block, dict) and block.get("type") == "tool_result":
                     result_text = block.get("content", "")
                     if isinstance(result_text, str) and len(result_text) > 200:
-                        block = {**block, "content": result_text[:100] + "... [compacted]"}
+                        # deep copy the block to avoid mutating the original
+                        block = dict(block)
+                        block["content"] = result_text[:100] + "... [compacted]"
                 new_content.append(block)
-            compacted.append({**msg, "content": new_content})
+            compacted.append(dict(msg, content=new_content))
 
         # truncate tool results (openai format)
         elif role == "tool":
