@@ -34,9 +34,10 @@ def check_command(
         if pattern.lower() in cmd_lower:
             return Action.DENY
 
-    # 2. allow list - auto-approve safe commands
+    # 2. allow list - auto-approve safe commands (word boundary check)
     for allowed in allow_commands:
-        if cmd_lower.startswith(allowed.lower()):
+        al = allowed.lower()
+        if cmd_lower == al or cmd_lower.startswith(al + " ") or cmd_lower.startswith(al + "\t"):
             return Action.ALLOW
 
     # 3. default
@@ -44,7 +45,14 @@ def check_command(
 
 
 def prompt_user(command: str) -> bool:
-    """Ask the user for approval to run a command."""
+    """Ask the user for approval to run a command.
+
+    In non-interactive mode (stdin not a tty), defaults to deny.
+    """
+    import sys
+    if not sys.stdin.isatty():
+        console.print(f"[yellow]bash: auto-denied (non-interactive):[/] {command}")
+        return False
     console.print(f"\n[yellow]bash:[/] [bold]{command}[/]")
     try:
         answer = console.input("[yellow]allow? [y/N] [/]").strip().lower()

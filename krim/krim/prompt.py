@@ -17,7 +17,8 @@ from krim.context import build_context
 
 CORE = """You are krim, a coding agent running in the user's terminal.
 You have tools: read, write, edit, bash.
-Be direct. Fix root causes, not symptoms. After editing code, verify your changes with bash (run tests, lint, compile). When done, say so."""
+Be direct. Fix root causes, not symptoms. After editing code, verify your changes with bash (run tests, lint, compile). When done, say so.
+Tool notes: bash working directory persists across calls (cd works). edit uses fuzzy matching if exact match fails."""
 
 
 def build_system_prompt(config: KrimConfig, extra_tools: list[str] | None = None) -> str:

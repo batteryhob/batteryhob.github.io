@@ -12,8 +12,9 @@ from krim.models.base import Model, ModelResponse, ToolCall
 
 
 class OpenAIModel(Model):
-    def __init__(self, model: str = "gpt-4o"):
+    def __init__(self, model: str = "gpt-4o", max_tokens: int = 16_384):
         self.model = model
+        self.max_tokens = max_tokens
         self.client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
     def chat(
@@ -26,6 +27,7 @@ class OpenAIModel(Model):
 
         kwargs: dict = {
             "model": self.model,
+            "max_tokens": self.max_tokens,
             "messages": messages,
         }
         if oai_tools:

@@ -16,11 +16,16 @@ class ReadTool(Tool):
         "limit": {"type": "integer", "description": "Max lines to return", "optional": True},
     }
 
+    MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
+
     def run(self, path: str, offset: int = 1, limit: int = 2000) -> str:
         path = os.path.expanduser(path)
         if not os.path.isfile(path):
             return f"error: {path} not found"
         try:
+            size = os.path.getsize(path)
+            if size > self.MAX_FILE_SIZE:
+                return f"error: {path} is too large ({size // 1024 // 1024}MB). use offset/limit or bash to read portions."
             with open(path, "r") as f:
                 lines = f.readlines()
 

@@ -1,10 +1,10 @@
 """Token tracking and conversation compaction.
 
 Strategy:
-- Estimate tokens from character count (rough: 1 token ~ 4 chars)
+- Estimate tokens from character count (rough: 1 token ~ 3 chars, conservative)
 - When conversation approaches limit, compact by:
   1. Replacing old tool results with summaries
-  2. Summarizing old conversation turns
+  2. Dropping oldest message pairs (preserving tool_call/result pairing)
   3. Preserving: system prompt, KRIM.md, recent messages
 """
 
@@ -13,11 +13,11 @@ from __future__ import annotations
 import json
 
 
-# rough estimate: 1 token ~ 4 chars for English, ~2 chars for CJK
+# rough estimate: ~3 chars per token (conservative; English ~4, CJK ~2, code ~3)
 def estimate_tokens(text: str) -> int:
     if not text:
         return 0
-    return len(text) // 3  # conservative estimate
+    return len(text) // 3
 
 
 def estimate_message_tokens(messages: list[dict]) -> int:
@@ -89,10 +89,65 @@ def compact(messages: list[dict], max_tokens: int = 120_000) -> list[dict]:
         else:
             compacted.append(msg)
 
-    # phase 2: if still too large, drop oldest non-system messages
+    # phase 2: if still too large, drop oldest message groups
+    # We must keep tool_call assistant msgs paired with their tool_result msgs
+    # to avoid orphaned references that cause API errors.
     result = ([system] if system else []) + compacted
     while len(result) > 4 and estimate_message_tokens(result) > max_tokens * 0.6:
-        # remove the oldest non-system message
-        result.pop(1)
+        # find the oldest droppable group (starting after system msg)
+        dropped = _drop_oldest_group(result, start=1)
+        if not dropped:
+            break  # nothing left to drop
 
     return result
+
+
+def _drop_oldest_group(messages: list[dict], start: int) -> bool:
+    """Drop the oldest message group starting at `start`.
+
+    Groups:
+    - assistant(tool_calls) + following tool_result(s) = drop together
+    - plain user + assistant pair = drop together
+    - single message = drop alone
+
+    Returns True if something was dropped.
+    """
+    if start >= len(messages):
+        return False
+
+    msg = messages[start]
+    role = msg.get("role", "")
+
+    # assistant with tool_calls: drop it + all following tool results
+    has_tool_calls = (
+        "tool_calls" in msg  # openai format
+        or (role == "assistant" and isinstance(msg.get("content"), list)
+            and any(b.get("type") == "tool_use" for b in msg["content"] if isinstance(b, dict)))
+    )
+    if has_tool_calls:
+        # count how many following messages are tool results
+        end = start + 1
+        while end < len(messages):
+            r = messages[end].get("role", "")
+            c = messages[end].get("content", "")
+            is_tool_result = (
+                r == "tool"  # openai
+                or (r == "user" and isinstance(c, list)
+                    and all(isinstance(b, dict) and b.get("type") == "tool_result"
+                            for b in c if isinstance(b, dict)))
+            )
+            if is_tool_result:
+                end += 1
+            else:
+                break
+        del messages[start:end]
+        return True
+
+    # user + assistant pair
+    if role == "user" and start + 1 < len(messages) and messages[start + 1].get("role") == "assistant":
+        del messages[start:start + 2]
+        return True
+
+    # fallback: drop single message
+    del messages[start]
+    return True

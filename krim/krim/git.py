@@ -40,11 +40,26 @@ def get_dirty_files() -> list[str]:
     return files
 
 
+def _stage_tracked_changes():
+    """Stage only tracked file changes + new files, skipping common sensitive patterns."""
+    # stage modified/deleted tracked files
+    _run_git("add", "-u")
+    # stage new files but exclude sensitive patterns
+    dirty = get_dirty_files()
+    skip = {".env", ".env.local", ".env.production", "credentials.json", "secrets.json",
+            ".DS_Store", "node_modules", "__pycache__"}
+    for f in dirty:
+        basename = f.rsplit("/", 1)[-1] if "/" in f else f
+        if basename in skip or f.startswith(".env"):
+            continue
+        _run_git("add", "--", f)
+
+
 def commit_dirty(message: str = "krim: save uncommitted changes before agent edits") -> bool:
     """Commit any uncommitted changes to protect the user's work."""
     if not has_uncommitted_changes():
         return False
-    _run_git("add", "-A")
+    _stage_tracked_changes()
     result = _run_git("commit", "-m", message)
     if result.returncode == 0:
         console.print(f"[dim]git: committed dirty files: {message}[/]")
@@ -56,7 +71,7 @@ def auto_commit(message: str = "krim: agent edits") -> bool:
     """Commit current changes with a descriptive message."""
     if not is_git_repo() or not has_uncommitted_changes():
         return False
-    _run_git("add", "-A")
+    _stage_tracked_changes()
     result = _run_git("commit", "-m", message)
     if result.returncode == 0:
         short_hash = _run_git("rev-parse", "--short", "HEAD").stdout.strip()

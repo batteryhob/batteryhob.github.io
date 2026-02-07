@@ -8,14 +8,18 @@ from __future__ import annotations
 
 import json
 import os
+import select
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 
 from rich.console import Console
 
+from krim import __version__
 from krim.tools.base import Tool
 from krim.truncate import truncate
+
+MCP_READ_TIMEOUT = 60  # seconds
 
 console = Console()
 
@@ -35,6 +39,19 @@ class McpTool(Tool):
         self.description = description
         self.parameters = parameters
         self._server = server
+        self._required: list[str] = []
+
+    def schema(self) -> dict:
+        """Generate schema with proper required field from MCP server."""
+        return {
+            "name": self.name,
+            "description": self.description,
+            "input_schema": {
+                "type": "object",
+                "properties": self.parameters,
+                "required": self._required,
+            },
+        }
 
     def run(self, **kwargs) -> str:
         return self._server.call_tool(self.name, kwargs)
@@ -79,8 +96,14 @@ class McpServer:
         self.process.stdin.write(header + data)
         self.process.stdin.flush()
 
-    def _recv_raw(self) -> bytes:
-        """Read a Content-Length framed message."""
+    def _recv_raw(self, timeout: float = MCP_READ_TIMEOUT) -> bytes:
+        """Read a Content-Length framed message with timeout."""
+        # wait for data with timeout
+        fd = self.process.stdout.fileno()
+        ready, _, _ = select.select([fd], [], [], timeout)
+        if not ready:
+            raise TimeoutError(f"MCP server did not respond within {timeout}s")
+
         # read headers
         content_length = 0
         while True:
@@ -123,7 +146,7 @@ class McpServer:
         resp = self._send("initialize", {
             "protocolVersion": "2024-11-05",
             "capabilities": {},
-            "clientInfo": {"name": "krim", "version": "0.1.0"},
+            "clientInfo": {"name": "krim", "version": __version__},
         })
         # send initialized notification
         notify = {
@@ -140,12 +163,16 @@ class McpServer:
         for t in resp["result"].get("tools", []):
             schema = t.get("inputSchema", {})
             props = schema.get("properties", {})
-            self.tools.append(McpTool(
+            required = schema.get("required", [])
+            # store full schema info so McpTool.schema() works correctly
+            tool = McpTool(
                 name=t["name"],
                 description=t.get("description", ""),
                 parameters=props,
                 server=self,
-            ))
+            )
+            tool._required = required
+            self.tools.append(tool)
 
     def call_tool(self, name: str, args: dict) -> str:
         try:
